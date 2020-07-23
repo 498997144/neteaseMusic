@@ -1,19 +1,76 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-const Home = () => import(/* webpackChunkName: "Home" */ '../views/home/Home.vue')
+const More = () => import(/* webpackChunkName: "More" */ '../views/more/More.vue')
+const My = () => import(/* webpackChunkName: "My" */ '../views/my/My.vue')
+const Cloud = () => import(/* webpackChunkName: "Cloud" */ '../views/cloud/Cloud.vue')
+const Movie = () => import(/* webpackChunkName: "Movie" */ '../views/movie/Movie.vue')
+const Login = () => import(/* webpackChunkName: "Login" */ '../views/login/Login.vue')
+const Phone = () => import(/* webpackChunkName: "Login" */ '../views/login/children/Phone.vue')
+const Email = () => import(/* webpackChunkName: "Login" */ '../views/login/children/Email.vue')
+const Register = () => import(/* webpackChunkName: "Login" */ '../views/login/children/Register.vue')
 
 Vue.use(VueRouter)
 
   const routes = [
   {
     path: '/',
-    redirect:'/home'
+    redirect:'/more'
   },
   {
-    path: '/home',
-    name: 'home',
-    component: Home
+    path: '/more',
+    name: 'more',
+    meta:{
+      showHeader:true,
+    },
+    component: More
+  },
+  {
+    path: '/my',
+    name: 'my',
+    meta:{
+      showHeader:true,
+    },
+    component: My
+  },
+  {
+    path: '/cloud',
+    name: 'cloud',
+    meta:{
+      showHeader:true,
+    },
+    component: Cloud
+  },
+  {
+    path: '/movie',
+    name: 'movie',
+    meta:{
+      showHeader:true,
+    },
+    component: Movie
+  },
+  {
+    path: '/login',
+    name: 'login',
+    redirect:'/login/phone',
+    component: Login,
+    children:[
+      {
+        path:'phone',
+        name:'phone',
+        component: Phone,
+      },
+      {
+        path:'email',
+        name:'email',
+        component: Email,
+      },
+      {
+        path:'register',
+        name:'register',
+        component: Register,
+      },
+    ],
   },
 ]
 
@@ -23,5 +80,10 @@ const router = new VueRouter({
   routes,
   linkActiveClass:'linkActive',
 })
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default router

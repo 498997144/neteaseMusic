@@ -1,10 +1,12 @@
 <template>
-  <div class="t-container"></div>
+  <div class="movie-container">
+    这是movie
+  </div>
 </template>
 
 <script>
     export default {
-        name: "T"
+        name: "Movie"
     }
 </script>
 
