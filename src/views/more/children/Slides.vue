@@ -1,9 +1,10 @@
 <template>
   <div class="slides-container">
     <swiper :options="slidesOptions">
-      <swiper-slide style="width: auto" v-for="item in slidesData" :key="item.id">
+      <swiper-slide style="width: auto" v-for="(item,index) in slidesData" :key="item.id">
             <div class="item">
               <div>
+                <span v-if="index === 0">{{+new Date().getDate()}}</span>
                 <img :src="item.iconUrl">
               </div>
               <span>{{item.name}}</span>
@@ -48,13 +49,19 @@
     justify-content: center;
     align-items: center;
     div{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
       height:0.8rem;
       width: 0.8rem;
       border-radius: 0.4rem;
       background-color: red;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      span{
+        position: absolute;
+        font-weight: 600;
+        color: red;
+      }
       img{
         width: 0.6rem;
       }
