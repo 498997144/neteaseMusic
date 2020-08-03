@@ -1,12 +1,12 @@
 <template>
-  <ul class="user-container" v-if="Object.keys(userDetail).length > 0">
+  <ul class="user-container">
     <li class="avatar">
-      <img :src="userDetail.profile.avatarUrl">
+      <img :src="avatarUrl">
     </li>
     <li class="info">
-      <div class="nickname">呢称:{{userDetail.profile.nickname}}</div>
+      <div class="nickname">呢称:{{nickName}}</div>
       <div class="level">
-        <span>Lv.{{userDetail.level}}</span>
+        <span>Lv.{{level}}</span>
       </div>
     </li>
   </ul>
@@ -17,30 +17,31 @@
         name: "Userinfo",
         data(){
             return {
-                userDetail:{},
+            
             }
         },
         computed:{
-            userId(){
-                return this.$store.state.userInfo.userId
+            avatarUrl(){
+                return this.$store.state.userInfo.profile.avatarUrl
             },
+            nickName(){
+              return this.$store.state.userInfo.profile.nickname
+            },
+            level(){
+                return this.$store.state.userInfo.level
+            },
+            
         },
         methods:{
-            async getuserDetail() {
-                const response = await this.axios.get(`/user/detail?uid=${this.userId}`)
-                if(response.code === 200){
-                    this.userDetail = response
-                }
-            },
-            async getuserInfo(){
+            //获取DJ,MV,等数,歌单数量
+            async getsubCount(){
                 const response = await this.axios.get(`/user/subcount`)
                 console.log(response)
             },
         },
         created() {
-            this.getuserDetail()
-            this.getuserInfo()
-        }
+            this.getsubCount()
+        },
     }
 </script>
 
@@ -68,12 +69,12 @@
     }
     .nickname{
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       color: white;
     }
     .level{
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       span{
         display: inline-block;
         color: white;

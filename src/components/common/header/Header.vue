@@ -35,6 +35,7 @@
   height: 0.9rem;
   background-color: white;
   border-bottom: 1px solid #999999;
+  z-index: 5;
   .middle{
     flex: 1;
     display: flex;

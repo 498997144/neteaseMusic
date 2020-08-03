@@ -21,14 +21,20 @@
 
 <style lang="less" scoped>
 .login-container{
+  position: fixed;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 7.5rem;
   height: 100%;
   background-color: #C20C0C;
-  border-top: 1px solid transparent;
+  z-index: 5;
   .logo{
     margin: 1rem 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 1.6rem;
     img{
       width: 1.6rem;
     }

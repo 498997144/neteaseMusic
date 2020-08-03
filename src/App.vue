@@ -5,22 +5,30 @@
         <Tab slot="middle"></Tab>
     </Header>
 <!--    主体-->
-    <router-view/>
+    <router-view :class="{active:this.$store.state.playList.length}" />
+<!--    播放控件-->
+    <Play></Play>
+  
   </div>
 </template>
 
 <script>
   import Header from "./components/common/header/Header";
   import Tab from "./components/common/tab/Tab";
+  import Play from "./components/content/play/Play";
   export default {
       name:'App',
-      components:{Header,Tab,},
+      components:{Header,Tab,Play},
       created(){
           this.getuserInfo()
+          this.getplayList()
       },
       methods:{
           getuserInfo(){
               this.$store.commit('saveUserinfo',JSON.parse(localStorage.getItem('userInfo')))
+          },
+          getplayList(){
+              this.$store.commit('savePlaylist',JSON.parse(localStorage.getItem('playList')))
           },
       },
   }
@@ -28,6 +36,12 @@
 
 <style lang="less" scoped>
   #app{
-    height: 100%;
+    .active{
+      &:after{
+        content: '';
+        height: 1rem;
+        display: block;
+      }
+    }
   }
 </style>

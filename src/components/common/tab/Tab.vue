@@ -3,7 +3,7 @@
    <slot>
      <Tabitem v-for="(item,index) in tabList" :key="index" @click.native="$router.push({name:item.path})">
        <i v-if="item.icon" :class="item.icon"></i>
-       <span :class="{active:$route.name == item.path}">{{item.name}}</span>
+       <span :class="{active:$route.name === item.path}">{{item.name}}</span>
      </Tabitem>
    </slot>
   </div>

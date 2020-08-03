@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import Userinfo from "./children/userinfo/Userinfo";
+  import Userinfo from "./children/Userinfo";
     export default {
         name: "My",
         components:{Userinfo},

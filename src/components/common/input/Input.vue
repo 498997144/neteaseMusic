@@ -1,11 +1,11 @@
 <template>
   <div class="input-container">
-    <input ref="input" :type="type" maxlength="20" :placeholder="placeholder" :value="value" @blur="$emit('blur')"
+    <input :type="type" maxlength="20" :placeholder="placeholder" :value="value" @blur="$emit('blur')"
            @input="$emit('input',$event.target.value)">
-    <p class="error">{{error}}</p>
-    <div class="clear" v-if="clear && value" @click="$emit('clearClick')">X</div>
-    <button @click="btnToggle" v-if="showpassword">明文</button>
-    <button @click="getVerifycode" v-if="btnTitle">{{btnTitle}}</button>
+    <p class="error" v-if="error">{{error}}</p>
+    <div :class="['ali-iconclose','clear',{active:showpassword},{code:btnTitle}]" v-show="value" @click="$emit('input','')"></div>
+    <div :class="[flag?'ali-iconbrowse':'ali-iconNotvisible','pbtn']" @click="btnToggle" v-if="showpassword"></div>
+    <div class="cbtn" @click="getVerifycode" v-if="btnTitle">{{btnTitle}}</div>
   </div>
 </template>
 
@@ -21,7 +21,9 @@
                 type: String,
                 default: '请输入内容'
             },
-            value: null,
+            value: {
+                default:'',
+            },
             clear: {
                 type: Boolean,
                 default: true
@@ -33,7 +35,7 @@
             },
             btnTitle: {
                 type: String,
-                default: ''
+                default: '',
             }
         },
         data() {
@@ -43,28 +45,29 @@
             }
         },
         methods: {
-            btnToggle(event) {
+            btnToggle() {
                 if (this.flag) {
-                    event.target.innerText = '密文'
-                    this.$refs.input.type = 'text'
+                    this.type = 'text'
+                    this.$emit('update:type',this.type)
                     this.flag = !this.flag
                 } else {
-                    event.target.innerText = '明文'
-                    this.$refs.input.type = 'password'
+                    this.type = 'password'
+                    this.$emit('update:type',this.type)
                     this.flag = !this.flag
                 }
             },
             getVerifycode(event) {
                 this.$emit('btnClick')
-                event.target.disabled = true
-                const timer = setInterval(() => {
+                clearInterval(this.btimer)
+                event.target.classList.toggle('disable')
+                this.btimer = setInterval(() => {
                     event.target.innerText = this.timer
                     this.timer--
                     if (this.timer === 0) {
                         this.timer = 60
-                        clearInterval(timer)
+                        clearInterval(this.btimer)
                         event.target.innerText = this.btnTitle
-                        event.target.disabled = false
+                        event.target.classList.toggle('.disable')
                     }
                 }, 1000)
             },
@@ -76,38 +79,72 @@
   .input-container {
     position: relative;
     width: 60%;
-    
+    margin: 0 auto;
     input {
       width: 100%;
-      height: 0.6rem;
+      height: 0.5rem;
       outline: none;
-      border: 1px solid #999999;
-      padding: 0 0.2rem;
+      background-color: transparent;
+      border-bottom: 1px solid #e3e3e3;
+      color: black;
+      text-indent: 0.2rem;
+      caret-color:red;
+      &::-webkit-input-placeholder{
+        color: #c6c6c6;
+      }
     }
     
     .error {
-      margin-top: 3px;
-      height: 12px;
-      color: black;
+      position: absolute;
+      left: 0;
+      bottom: -0.4rem;
+      display: flex;
+      align-items: center;
+      height: 0.4rem;
+      width: 100%;
+      color: #e3e3e3;
+      text-indent: 0.1rem;
     }
     
     .clear {
       position: absolute;
-      font-size: 0.22rem;
-      right: 0.6rem;
+      right: 0;
+      color: #e3e3e3;
       top: 50%;
-      transform: translateY(-110%);
+      transform: translateY(-50%);
+      &.active{
+        right: 0.5rem;
+      }
+      &.code{
+        right: 1.8rem;
+      }
     }
     
-    button {
+    .pbtn {
       position: absolute;
-      padding: 2px 5px;
-      background-color: #ff281c;
-      color: white;
-      outline: none;
+      color: #e3e3e3;
       top: 50%;
-      transform: translateY(-85%);
-      right: -0.2rem;
+      transform: translateY(-50%);
+      right: 0;
+    }
+    .cbtn{
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 0.5rem;
+      width: 1.6rem;
+      color: #e3e3e3;
+      background-color: red;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+      border-radius: 0.05rem;
+      &.disable {
+        pointer-events: none;
+        background-color: #999999;
+        color: #666666;
+      }
     }
   }
 </style>

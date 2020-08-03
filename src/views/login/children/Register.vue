@@ -2,7 +2,7 @@
   <div class="reg-container">
     <Input class="reg" type="tel" v-model="regForm.phone" @clearClick="regForm.phone = ''" :error="error.phone"
            placeholder="请输入手机号码"/>
-    <Input class="password" type="password" :showpassword="true" v-model="regForm.password" :error="error.password"
+    <Input class="password" :type="ptype" :showpassword="true" v-model="regForm.password" :error="error.password"
            @clearClick="regForm.password = ''" placeholder="请输入密码"/>
     <Input class="captcha" type="tel" v-model="regForm.captcha" btnTitle="获取验证码" @btnClick="getVerifycode"
            @clearClick="regForm.captcha = ''" :error="error.captcha" placeholder="请输入验证码"/>
@@ -33,15 +33,14 @@
                 },
                 captcha: false, //验证码是否正确
                 isRegister: false, //手机号是未被注册
+                ptype:'password',
             }
         },
         watch: {
             //防抖1.5秒,正则验正手机号并发送请求获取手机号是否被注册！
             'regForm.phone'(data) {
-                if (this.timer) {
-                    clearTimeout(this.timer)
-                }
-                this.timer = setTimeout(() => {
+                clearTimeout(this.ptimer)
+                this.ptimer = setTimeout(() => {
                     const reg = /(13|14|15|17|18|19)[0-9]{9}/
                     if (!reg.test(data)) {
                         this.error.phone = '请输入正确的手机号码!'
@@ -52,10 +51,8 @@
             },
             //防抖1.5秒,检测密码是否为空！
             'regForm.password'(data) {
-                if (this.timer) {
-                    clearTimeout(this.timer)
-                }
-                this.timer = setTimeout(() => {
+                clearTimeout(this.mtimer)
+                this.mtimer = setTimeout(() => {
                     if (data.length === 0) {
                         this.error.password = '不能为空!'
                     } else {
@@ -65,10 +62,8 @@
             },
             //防抖1.5秒,发送请求检测验证码是否正确！
             'regForm.captcha'(data) {
-                if (this.timer) {
-                    clearTimeout(this.timer)
-                }
-                this.timer = setTimeout(() => {
+                clearTimeout(this.ctimer)
+                this.ctimer = setTimeout(() => {
                     if (data.length === 4) {
                         this.validate()
                     }
@@ -100,11 +95,13 @@
             },
             //获取验证码
             async getVerifycode() {
-                const response = await this.axios.get(`/captcha/sent?phone=${this.regForm.phone}`)
-                if (response.code === 200) {
-                    this.error.captcha = '验证码发送成功!'
-                } else {
-                    this.error.captcha = '验证码发送失败!'
+                if (this.phone && this.password){
+                    const response = await this.axios.get(`/captcha/sent?phone=${this.regForm.phone}`)
+                    if (response.code === 200) {
+                        this.error.captcha = '验证码发送成功!'
+                    } else {
+                        this.error.captcha = '验证码发送失败!'
+                    }
                 }
             },
             //校验验证码
@@ -139,20 +136,20 @@
 
 <style lang="less" scoped>
   .reg-container {
-    .reg {
+    .reg,.password,.captcha {
       margin: 0 auto;
-      margin-top: 0.4rem;
+      margin-top: 1rem;
     }
     
-    .password {
-      margin: 0 auto;
-      margin-top: 0.2rem;
-    }
+    /*.password {*/
+    /*  margin: 0 auto;*/
+    /*  margin-top: 0.2rem;*/
+    /*}*/
     
-    .captcha {
-      margin: 0 auto;
-      margin-top: 0.2rem;
-    }
+    /*.captcha {*/
+    /*  margin: 0 auto;*/
+    /*  margin-top: 0.2rem;*/
+    /*}*/
     
     .rigster {
       display: flex;
@@ -160,7 +157,7 @@
       align-items: center;
       padding: 0 0.1rem;
       margin: 0 auto;
-      margin-top: 0.1rem;
+      margin-top: 0.7rem;
       width: 3rem;
       height: 0.6rem;
       border-radius: 0.3rem;

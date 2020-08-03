@@ -25,10 +25,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  width: 4rem;
-  height: 1rem;
-  animation: Display 3s ease-in-out;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 5rem;
+  min-height: 1.4rem;
+  padding: 0.2rem 0.4rem;
+  animation: Display 3.5s ease-in-out;
+  /*background-color: rgba(0, 0, 0, 0.5);*/
+  background-color: black;
   border-radius: 0.2rem;
   color: white;
   font-size: 14px;
