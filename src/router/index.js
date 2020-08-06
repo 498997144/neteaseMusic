@@ -15,6 +15,8 @@ const Email = () => import(/* webpackChunkName: "Login" */ '../views/login/child
 const Register = () => import(/* webpackChunkName: "Login" */ '../views/login/children/Register.vue')
 
 
+const Recommendsong = () => import(/* webpackChunkName: "Recommendsong" */ '../views/recommendsong/Recommendsong.vue')
+
 
 Vue.use(VueRouter)
 
@@ -77,6 +79,11 @@ Vue.use(VueRouter)
         component: Register,
       },
     ],
+  },
+  {
+    path:'/recommend/song',
+    name:'recommendsong',
+    component:Recommendsong,
   },
   
 ]

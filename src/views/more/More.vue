@@ -9,7 +9,7 @@
     <Title v-if="length" :btnText="btnText(0)" :title="title(0)"></Title>
     <Rsongsheet v-if="length" :songSheet="recommendData(0)"></Rsongsheet>
 <!--    推荐歌曲-->
-    <Title v-if="length" @btnClick="playAllsong" :btnText="btnText(1)" :title="title(1)"></Title>
+    <Title v-if="length" @btnClick="playAll" :btnText="btnText(1)" :title="title(1)"></Title>
     <Rsong v-if="length" :songList="recommendData(1)"></Rsong>
 <!--    官方推荐歌单-->
     <Title v-if="length" :btnText="btnText(2)" :title="title(2)"></Title>
@@ -48,19 +48,31 @@
                    console.log(response.data.blocks)
                }
            },
+            
             //将所有歌曲添加至播放队列
-           playAllsong(){
-               const playList = []
-               this.recommendData(1).forEach((item)=>{
-                   item.resources.forEach((item)=>{
-                       playList.push(item)
-                   })
-               })
-               this.$store.commit('savePlaylist',playList)
+           playAll(){
+               this.$store.commit('savePlaylist',this.playList)
                this.bus.$emit('toogleSong',0)
            },
         },
         computed:{
+            //构建播放队列
+            playList(){
+                const playList = []
+                this.recommendData(1).forEach((item)=>{
+                    const songs = item.resources.map((item)=>{
+                        const song = {}
+                        song.id = item.resourceExtInfo.songData.id
+                        song.name = item.resourceExtInfo.songData.name
+                        song.ar = item.resourceExtInfo.songData.artists
+                        song.al = item.resourceExtInfo.songData.album
+                        song.privilege = item.resourceExtInfo.songPrivilege
+                        return song
+                    })
+                    playList.push(...songs)
+                })
+                return playList
+            },
             btnText(){
                 return (index)=>{
                     return this.homeData[index].uiElement.button.text

@@ -3,7 +3,7 @@
     <swiper :options="slidesOptions">
       <swiper-slide style="width: auto" v-for="(item,index) in slidesData" :key="item.id">
             <div class="item">
-              <div>
+              <div @click="to(index)">
                 <span v-if="index === 0">{{+new Date().getDate()}}</span>
                 <img :src="item.iconUrl">
               </div>
@@ -27,11 +27,20 @@
             }
         },
         methods:{
+            //获取导航数据
             async getSlides(){
                 const response = await this.axios.get(`/homepage/dragon/ball`)
                 if(response.code ===200){
                     this.slidesData = response.data
                 }
+            },
+            //页面跳转
+            to(index){
+                switch (index) {
+                    case 0:
+                        return this.$router.push({name:'recommendsong'})
+                }
+                
             },
         },
         created(){

@@ -1,7 +1,7 @@
 <template>
   <div class="rsquare-container">
     <swiper :options="squareOptions">
-      <swiper-slide style="width: 2.2rem" v-for="item in squareList" :key="item.id">
+      <swiper-slide style="width: 3.2rem" v-for="item in squareList" :key="item.id">
         <Square :squareItem="item"></Square>
       </swiper-slide>
     </swiper>

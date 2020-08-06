@@ -2,7 +2,7 @@
   <div class="square-container">
     <div>
       <img :src="squareItem.resource.mlogBaseData.coverUrl">
-      <span class="ali-icongood">{{squareItem.resource.mlogExt.likedCount | countFilter}}</span>
+      <span class="ali-icongood">{{squareItem.resource.mlogExt.likedCount}}</span>
     </div>
     <p>{{squareItem.resource.mlogBaseData.text}}</p>
   </div>
@@ -11,17 +11,6 @@
 <script>
     export default {
         name: "Square",
-        filters:{
-            countFilter(number){
-                if(number > 10000){
-                    return `${parseInt((number / 10000))}万`
-                }
-                if(number > 10000000){
-                    return `${(number / 100000000).toFixed(2)}亿`
-                }
-                return number
-            },
-        },
         props:{
             squareItem:{
                 type:Object,
@@ -35,14 +24,14 @@
 
 <style lang="less" scoped>
   .square-container{
-    width: 2rem;
+    width: 3rem;
     border-radius:0.1rem;
     overflow: hidden;
     div{
       position: relative;
       img{
-        width: 2rem;
-        height: 2.8rem;
+        width: 3rem;
+        height: 4.2rem;
       }
       span{
         position: absolute;

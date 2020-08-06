@@ -13,6 +13,8 @@ body {
 }
 html{
     font-size: 13.333333vw;
+    overflow-x: hidden;
+    scroll-behavior:smooth
 }
 @media screen and (max-width:320px){
     
@@ -43,6 +45,11 @@ html{
 .overflow{
     overflow: hidden;
     white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.elli{
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 

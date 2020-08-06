@@ -8,11 +8,8 @@
 </template>
 
 <script>
-    import Input from "../../../components/common/input/Input";
-    
     export default {
         name: "Email",
-        components: {Input,},
         data() {
             return {
                 //登陆表单

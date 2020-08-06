@@ -8,16 +8,15 @@
       <p class="count">{{songSheet.trackCount}}首</p>
     </div>
     <div class="check">
-      <Checkbtn v-model="checkList" :value="songSheet.id" :isChecked.sync="isChecked" @click.native="$emit('btnClick')"></Checkbtn>
+      <Checkbtn v-show="checkShow" :value="songSheet.id"
+                @pushitem="pushitem" @removeitem="removeitem"></Checkbtn>
     </div>
   </div>
 </template>
 
 <script>
-  import Checkbtn from "../../../common/checkbtn/Checkbtn";
     export default {
         name: "Collsongsheet",
-        components:{Checkbtn,},
         props:{
             songSheet:{
                 type:Object,
@@ -26,12 +25,34 @@
                 }
             },
             index:Number,
+            checkShow:{
+                type:Boolean,
+                default:false,
+            },
+            checkList:{
+                type:Array,
+                default(){
+                    return []
+                }
+            },
         },
-        data(){
-            return {
-                checkList:[],
-                isChecked:false,
-            }
+        watch:{
+            checkList(data){
+                this.$emit('update:checkList',data)
+            },
+        },
+        methods:{
+            //选择歌曲
+            pushitem(value){
+                this.checkList.push(value)
+            },
+            
+            removeitem(value){
+                const index = this.checkList.findIndex((item)=>{
+                    return item === value
+                })
+                this.checkList.splice(index,1)
+            },
         },
     }
 </script>

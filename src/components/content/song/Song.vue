@@ -1,9 +1,9 @@
 <template>
   <div class="song-container" v-if="length">
     <div class="img">
-      <img :src="url">
+      <img :src="imgUrl">
     </div>
-    <div class="name">
+    <div class="name" @click="addSong">
       <p class="title">
         <span>{{mainTitle}}</span>
         <i>{{names}}</i>
@@ -13,7 +13,7 @@
       </p>
     </div>
     <div class="btn" @click="addSong">
-      <div :class="{active:currentId === id}" ref="playBtn"></div>
+      <div :class="{active:currentId === id}"></div>
     </div>
   </div>
 </template>
@@ -31,7 +31,7 @@
         },
         data(){
             return {
-                currentId:null,
+                currentId:'',
             }
         },
         computed:{
@@ -44,7 +44,7 @@
                 names = names.substring(0,names.length-1)
                 return names
             },
-            url(){
+            imgUrl(){
                 return this.song.uiElement.image.imageUrl
             },
             mainTitle(){
@@ -67,8 +67,18 @@
         methods:{
             //添加歌曲到播放列表
             addSong(){
-                this.$store.commit('addSong',this.song)
-                this.bus.$emit('play',this.id)
+                if(this.currentId !== this.id){
+                    const song = {}
+                    song.id = this.id
+                    song.name = this.song.resourceExtInfo.songData.name
+                    song.ar = this.song.resourceExtInfo.songData.artists
+                    song.al = this.song.resourceExtInfo.songData.album
+                    song.privilege = this.song.resourceExtInfo.songPrivilege
+                    this.$store.commit('addSong',song)
+                    this.bus.$emit('play',this.id)
+                }else{
+                    this.bus.$emit('showDetail')
+                }
             },
         },
         mounted() {

@@ -1,8 +1,10 @@
 <template>
   <div id="app">
 <!--    头部区域-->
-    <Header v-if="$route.meta.showHeader">
+    <Header v-if="$route.meta.showHeader" style=" border-bottom: 1px solid #999999;">
+        <i slot="left" class="ali-iconset"></i>
         <Tab slot="middle"></Tab>
+        <i slot="right" class="ali-iconsearch"></i>
     </Header>
 <!--    主体-->
     <router-view :class="{active:this.$store.state.playList.length}" />
@@ -13,12 +15,10 @@
 </template>
 
 <script>
-  import Header from "./components/common/header/Header";
-  import Tab from "./components/common/tab/Tab";
   import Play from "./components/content/play/Play";
   export default {
       name:'App',
-      components:{Header,Tab,Play},
+      components:{Play},
       created(){
           this.getuserInfo()
           this.getplayList()

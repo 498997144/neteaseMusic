@@ -11,11 +11,8 @@
 </template>
 
 <script>
-    import Input from "../../../components/common/input/Input";
-    
     export default {
         name: "Register",
-        components: {Input,},
         data() {
             return {
                 //注册表单

@@ -1,70 +1,47 @@
 <template>
-  <div :class="['checkbtn-container',{x:x},{y:y}]">
-      <input :class="{'ali-iconseleted':isChecked}" :checked="isChecked" :value="value"
-             @change="change" type="checkbox">
+  <div class="checkbtn-container">
+      <input :class="{'ali-iconseleted':isChecked}"
+             @change="change" :value="value" type="checkbox">
   </div>
 </template>
 
 <script>
     export default {
         name: "Checkbtn",
-        model:{
-            event:'change',
-            prop:'checked',
-        },
         props: {
             value: {
                 default: '',
             },
-            isChecked:{
-                type:Boolean,
-                default: false,
-            },
-            x:{
-                type:Boolean,
-                default:true
-            },
-            y:{
-                type:Boolean,
-                default:false,
-            },
         },
-        data() {
+        data(){
             return {
-                checkList:[],
+                isChecked:false,
             }
         },
         methods: {
             change(event) {
-                const {checked,value} = event.target
-                // console.log(checked,value)
+                const {value,checked} = event.target
                 if(checked){
-                    this.checkList.push(value)
-                    this.$emit('update:isChecked',checked)
+                    this.isChecked = true
+                    this.$emit('pushitem',value)
                 }else {
-                    this.$emit('update:isChecked',checked)
-                    const index = this.checkList.findIndex(item => item === value)
-                    this.checkList.splice(index,1)
+                    this.isChecked = false
+                    this.$emit('removeitem',value)
                 }
-                this.$emit('change',this.checkList)
+            },
+            reset(){
+                this.isChecked = false
             },
         },
-        mounted() {
-            if(this.isChecked){
-                this.checkList.push(this.value)
-                this.$emit('change',this.checkList)
-            }
-        }
     }
 </script>
 
 <style lang="less" scoped>
     .checkbtn-container{
-        &.y{
-            width: 0.4rem;
-            display: flex;
-            flex-direction: column;
-        }
+      width: 0.4rem;
+      height: 0.4rem;
+      background-color: transparent;
+      border-radius: 0.2rem;
         input {
             display: flex;
             justify-content: center;

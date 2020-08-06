@@ -2,17 +2,15 @@
   <ul class="header-container">
     <li class="left">
       <slot name="left">
-        <i class="ali-iconset"></i>
       </slot>
     </li>
     <li class="middle">
       <slot name="middle">
-        <span>title</span>
+        <span></span>
       </slot>
     </li>
     <li class="right">
       <slot name="right">
-        <i class="ali-iconsearch"></i>
       </slot>
     </li>
   </ul>
@@ -34,7 +32,6 @@
   width: 7.5rem;
   height: 0.9rem;
   background-color: white;
-  border-bottom: 1px solid #999999;
   z-index: 5;
   .middle{
     flex: 1;

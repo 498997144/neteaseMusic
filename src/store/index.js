@@ -30,10 +30,9 @@ export default new Vuex.Store({
         },
         //添加单首歌曲到播放列表
         addSong(state, song) {
-            const songId = song.resourceExtInfo.songData.id
+            const songId = song.id
             const flag = state.playList.find((item)=>{
-                const itemId = item.resourceExtInfo.songData.id
-                return songId === itemId
+                return songId === item.id
             })
             if(!flag){
                 state.playList.push(song)
@@ -43,6 +42,11 @@ export default new Vuex.Store({
         //删除单首歌曲
         removeSong(state, index) {
             state.playList.splice(index,1)
+            localStorage.setItem('playList', JSON.stringify(state.playList))
+        },
+        //从当前播放歌曲后追加至播放队列
+        Additional(state,{index,songs}){
+            state.playList.splice(index+1,0,...songs)
             localStorage.setItem('playList', JSON.stringify(state.playList))
         },
     },

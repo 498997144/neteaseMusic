@@ -32,7 +32,7 @@
         <li><i class="ali-iconremind"></i></li>
         <li>
           <i class="ali-iconcomments comment">
-            <span>{{commentCount | countFilter}}</span>
+            <span>{{commentCount | commentCountFilter}}</span>
           </i>
         </li>
         <li><i class="ali-iconmore" ></i></li>
@@ -79,23 +79,11 @@
             'totalTime','currentTime','loadingTime','id'],
         filters:{
             timeFilter(time){
-                let f = Math.floor(time / 60)
-                f =  f>10?`${f}`:`0${f}`
-                let m = parseInt(time % 60)
-                m = m>10?`${m}`:`0${m}`
-                return `${f}:${m}`
-            },
-            countFilter(number){
-                if(number > 999 && number < 10000){
-                    return '999+'
-                }
-                if(number > 9999 && number < 100000){
-                    return '1w+'
-                }
-                if(number > 99999 && number < 1000000){
-                    return '10w+'
-                }
-                return number
+                let m = Math.floor(time / 60)
+                m = m >= 10?`${m}`:`0${m}`
+                let s = parseInt(time % 60)
+                s = s >= 10?`${s}`:`0${s}`
+                return `${m}:${s}`
             },
         },
         data(){
@@ -103,6 +91,11 @@
                 likeFlag:true,
                 commentCount:'',
             }
+        },
+        watch:{
+            id(){
+                this.getcommentCount()
+            },
         },
         methods:{
            // 喜欢与不喜欢
@@ -138,10 +131,6 @@
                 
             }
         },
-        created() {
-          this.getcommentCount()
-        }
-    
     }
 </script>
 
@@ -306,7 +295,7 @@
             outline: 0;
             border-radius: 0.1rem;
             -webkit-appearance: none;
-            background: linear-gradient(to right, #ff090e, #a01101) no-repeat;
+            background: linear-gradient(to right, red , red) no-repeat;
             background-size: 0% 100%;
             &::-webkit-slider-runnable-track {
               height: 0.2rem;
@@ -334,12 +323,12 @@
         }
         .loading{
           position: absolute;
-          left: 0.06rem;
+          left: 0.04rem;
           transition: all 2s linear;
           transform: translateY(2px);
           height: 0.2rem;
           width: 100%;
-          background:linear-gradient(to right,blue,#0086b3) no-repeat;
+          background: linear-gradient(to right, blue , blue) no-repeat;
           background-size: 0% 100%;
           border-radius: 0.1rem;
         }

@@ -43,15 +43,16 @@
 <!--    收藏区域-->
     <Dialog v-show="collShow" :isShow.sync="collShow" title="收藏到歌单">
       <div slot="right">
-        <Checkbtn :isChecked.sync="isAll" ref="allBtn" @click.native="allSelect"></Checkbtn>
+        <i @click="toogleCheck" ref="checkBtn">多选</i>
       </div>
       <div slot="body">
-        <swiper :options="playlistOption" style="height:7.8rem">
+        <swiper :options="collOption" style="height:7.8rem">
           <swiper-slide style="height:auto;">
             <New @click.native="newsheetShow = true"></New>
             <Collsongsheet ref="collSheet" :songSheet="item" :index="index"
                            v-for="(item,index) in collSongheet" :key="index"
-                           @coll="coll" @btnClick="isSelected"></Collsongsheet>
+                           @coll="coll" :checkShow="checkShow" :checkList.sync="checkList">
+            </Collsongsheet>
           </swiper-slide>
         </swiper>
       </div>
@@ -69,16 +70,14 @@
 </template>
 
 <script>
-  import Dialog from "../../common/dialog/Dialog";
-  import Collsongsheet from "./children/Collsongsheet";
   import Player from "./children/Player";
-  import Checkbtn from "../../common/checkbtn/Checkbtn";
-  import New from "./children/New";
-  import Newsheet from "./children/Newsheet";
   import Songdetail from "./children/Songdetail";
-    export default {
+  import {collsongSheet} from "../../../assets/js/mixin";
+
+  export default {
         name: "Play",
-        components:{Dialog,Collsongsheet,New,Newsheet,Checkbtn,Songdetail,Player},
+        components:{Songdetail,Player},
+        mixins:[collsongSheet],
         data(){
             return {
                 isShow:false, //播放列表显示
@@ -104,11 +103,13 @@
                     // roundLengths: true,
                 }, //滑动配置
                 currentRoute:'', //当前路由
-                collShow:false,  //收藏到歌单显示
-                newsheetShow:false, //新建歌显示
-                collSongheet:[],//用户歌单
-                isAll:false, //是否全选
-                detailShow:false, //播放祥显示
+                detailShow:false, //播放祥情显示
+                // collShow:false,  //收藏到歌单显示
+                // newsheetShow:false, //新建歌显示
+                // collSongheet:[],//用户歌单
+                // checkShow:false,//选择框显示控制
+                // checkFlag:true, //选择控制
+                // checkList:[],  //选中的歌单
                 currentTime:0,//当前播放的时间
                 totalTime:0, //总的时间
                 updateFlag:true,//更新时间控制
@@ -125,7 +126,6 @@
                     this.audio.pause()
                     this.isPlay = false
                 }
-                // console.log(this.totalTime)
             },
             //切换播放模式
             toogleMode(){
@@ -180,7 +180,7 @@
                 if(this.playTimer){
                     clearTimeout(this.playTimer)
                 }
-                this.playTimer = setTimeout(this.play,500)
+                this.playTimer = setTimeout(this.play,800)
             },
             //删除歌曲
             removeSong(index){
@@ -208,16 +208,6 @@
                    this.url = response.data[0].url
                }
             },
-            //获取用户歌单
-           async showColl(){
-               const response = await this.axios.get(`/user/playlist?uid=${this.userId}`)
-               if(response.code === 200){
-                   this.collSongheet = response.playlist
-                   this.collShow = true
-               }else {
-                   this.toast(response.msg)
-               }
-            },
             //切换播放列表显示
             toogleShow(type){
                 this.showType = type
@@ -240,36 +230,12 @@
                     this.isShow = !this.isShow
                 }
             },
-           async coll(sheetId){
-               const songIds = []
-               this.playList.forEach((item)=>{
-                   songIds.push(item.resourceExtInfo.songData.id)
-               })
-               const response = await this.axios.get(`/playlist/tracks?op=add&pid=${sheetId}&tracks=${songIds.join()}`)
-               if(response.code === 200){
-                   this.toast('收藏成功')
-                   this.showColl()
-               }else{
-                   this.toast(response.msg)
-               }
-               console.log(response)
-           },
-            //全选、反选
-            allSelect(){
-                this.$refs.collSheet.forEach(item => item.isChecked = !this.isAll)
-            },
-            // 是否全选
-            isSelected(){
-               
-                const isAll = !this.$refs.collSheet.find((item)=>{
-                     return item.$children[0].$el.firstChild.checked === false
-                 })
-                this.isAll = isAll
-            },
+            //准备就绪时
             canplay({duration,currentTime}){
                 this.totalTime = duration
                 this.currentTime = currentTime
             },
+            //播放中时间发生改变
             timeupdate({currentTime}){
                this.updateFlag && (this.currentTime = currentTime)
             },
@@ -282,12 +248,17 @@
                     this.updateFlag = true
                 },1000)
             },
+            //当前加的进度
             loading({buffered}){
                 this.loadingTime = buffered.end(buffered.length - 1)
             },
         },
         watch:{
-            //当前歌曲id
+            //当前歌曲发生改变
+            currentSong(data){
+                this.bus.$emit('changeSong',data)
+            },
+            //当前歌曲id发生变化获取url
             id(){
                 if(this.id){
                     this.getsongUrl()
@@ -322,14 +293,14 @@
             //播放列表歌曲名字
             listName(){
                 return function (index) {
-                   return this.playList[index].resourceExtInfo.songData.name
+                   return this.playList[index].name
                 }
             },
             //拼接播放列表歌手名字
             name(){
                 return function (index) {
                     let names = '-'
-                    this.playList[index].resourceExtInfo.artists.forEach((item)=>{
+                    this.playList[index].ar.forEach((item)=>{
                         names += item.name + '/'
                     })
                     names = names.substring(0,names.length-1)
@@ -339,7 +310,7 @@
             //拼接当前歌曲多个歌手名字
             names(){
                 let names = ''
-                this.playList[this.currentSong].resourceExtInfo.artists.forEach((item)=>{
+                this.playList[this.currentSong].ar.forEach((item)=>{
                     names += item.name + '/'
                 })
                 names = names.substring(0,names.length-1)
@@ -347,23 +318,23 @@
             },
             //当前歌曲名字
             songName(){
-                return this.playList[this.currentSong].resourceExtInfo.songData.name
+                return this.playList[this.currentSong].name
             },
             //歌曲ID
             id(){
                 if(this.length){
-                    return this.playList[this.currentSong].resourceExtInfo.songData.id
+                    return this.playList[this.currentSong].id
                 }else {
                     return false
                 }
             },
             //歌曲图片
             imageUrl(){
-               return  this.playList[this.currentSong].uiElement.image.imageUrl
+               return  this.playList[this.currentSong].al.picUrl
             },
-            //用户id
-            userId(){
-                return this.$store.state.userInfo.profile.userId
+            //收藏歌曲的id
+            collsongsid(){
+               return this.playList.map(item => item.id)
             },
         },
         created() {
@@ -376,7 +347,7 @@
             //接收推荐歌曲点击播放的是哪首歌曲
             this.bus.$on('play',(songId)=>{
                const index = this.playList.findIndex((item)=>{
-                    return songId === item.resourceExtInfo.songData.id
+                    return songId === item.id
                 })
                 if(index !== this.currentSong){
                     this.toogleSong(index)
@@ -384,6 +355,8 @@
             })
             //接收播放全按钮点击后切换歌曲
             this.bus.$on('toogleSong',this.toogleSong)
+            //接收单首歌点击这后显示歌曲祥情
+            this.bus.$on('showDetail',()=>{ this.detailShow = true })
         },
     }
 </script>

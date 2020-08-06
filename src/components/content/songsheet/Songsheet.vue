@@ -2,7 +2,7 @@
   <div class="songsheet-container">
     <div>
       <img :src="url">
-      <span class="ali-iconhot">{{playCount | countFilter}}</span>
+      <span class="ali-iconhot">{{playCount | playCountFilter}}</span>
     </div>
     <p>{{title}}</p>
   </div>
@@ -17,17 +17,6 @@
                 default(){
                     return {}
                 }
-            },
-        },
-        filters:{
-            countFilter(number){
-                if(number > 10000){
-                    return `${parseInt((number / 10000))}万`
-                }
-                if(number > 10000000){
-                    return `${(number / 100000000).toFixed(2)}亿`
-                }
-                return number
             },
         },
         computed:{

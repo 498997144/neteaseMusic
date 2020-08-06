@@ -9,11 +9,8 @@
 </template>
 
 <script>
-    import Input from "../../../components/common/input/Input";
-    
     export default {
         name: "Phone",
-        components: {Input,},
         data() {
             return {
                 //登陆表单
