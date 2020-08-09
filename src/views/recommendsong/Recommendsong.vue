@@ -12,13 +12,14 @@
     </div>
 <!--   主体-->
     <div class="body">
-<!--      推荐歌曲-->
+<!--      播放按钮-->
       <div class="playall">
         <span class="ali-iconplay" @click="playAll">播放全部</span>
         <i class="ali-iconnav-list" @click="showCheck">多选</i>
       </div>
+<!--      歌曲列表-->
       <ul class="songlist">
-        <Csong v-for="(item) in songData.dailySongs" :reasons="songData.recommendReasons" :key="item.id" :song="item"></Csong>
+        <Song v-for="(item) in songData.dailySongs" :reasons="songData.recommendReasons" :key="item.id" :song="item"></Song>
         <!--      选择按钮区-->
         <div class="check" v-show="checkbtnShow">
           <Checkbtn v-for="(item) in playList" :value="item.id"  :key="item.id"
@@ -50,12 +51,12 @@
 </template>
 
 <script>
-  import Csong from "../../components/content/csong/Csong";
+  import Song from "../../components/content/song/Song";
   import Buttons from "../../components/common/buttons/Buttons";
   import {collsongSheet} from "../../assets/js/mixin"
     export default {
         name: "Recommendsong",
-        components:{Csong,Buttons},
+        components:{Song,Buttons},
         mixins:[collsongSheet],
         data(){
             return {
@@ -129,6 +130,7 @@
                     case 1:
                         this.checkbtnShow = false
                         this.showColl()
+                        break
                 }
             },
             //播放全部

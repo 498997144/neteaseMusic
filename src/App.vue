@@ -3,7 +3,7 @@
 <!--    头部区域-->
     <Header v-if="$route.meta.showHeader" style=" border-bottom: 1px solid #999999;">
         <i slot="left" class="ali-iconset"></i>
-        <Tab slot="middle"></Tab>
+        <Tab slot="middle" class="tab"></Tab>
         <i slot="right" class="ali-iconsearch"></i>
     </Header>
 <!--    主体-->
@@ -42,6 +42,12 @@
         height: 1rem;
         display: block;
       }
+    }
+   /deep/ .tab .tab-item .active{
+      height: auto;
+      color: black;
+      transform: scale(1.2);
+      border: none;
     }
   }
 </style>

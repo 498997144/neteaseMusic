@@ -39,6 +39,8 @@
                 switch (index) {
                     case 0:
                         return this.$router.push({name:'recommendsong'})
+                    case 1:
+                        return this.$router.push({name:'songsheetcate'})
                 }
                 
             },
@@ -73,6 +75,8 @@
       }
       img{
         width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 50%;
       }
     }
     span{

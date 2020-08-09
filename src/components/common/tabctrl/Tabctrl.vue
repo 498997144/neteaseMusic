@@ -1,8 +1,8 @@
 <template>
   <div class="tabctrl-container">
     <slot>
-      <Tabctrlitem v-for="(item,index) in tabList" :key="index"  @click.native="$router.push({name:item.path})">
-        <p :class="{active:$route.name == item.path}">
+      <Tabctrlitem v-for="(item,index) in tabList" :key="index"  @click.native="toogle(index,item.type)">
+        <p :class="{active:mycurrentIndex === index}">
           <span>{{item.name}}</span>
         </p>
       </Tabctrlitem>
@@ -19,10 +19,25 @@
             tabList: {
                 type:Array,
                 default() {
-                    return [{name:'手机登陆',path:'phone'},{name:'邮箱登陆',path:'email'},{name:'注册',path:'register'}]
+                    return [{name:'手机登陆',type:'email'},{name:'邮箱登陆',type:'email'},{name:'注册',type:'register'}]
                 }
             },
+            currentIndex:{
+                type:Number,
+                default:0,
+            },
         },
+       data(){
+            return {
+                mycurrentIndex:this.currentIndex
+            }
+       },
+       methods:{
+            toogle(index,type){
+                this.mycurrentIndex = index
+                this.$emit('click',index,type)
+            },
+       },
     }
 </script>
 

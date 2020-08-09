@@ -24,8 +24,13 @@
     font-size: 14px;
     color: #707070;
     &.active{
-      color: black;
-      transform: scale(1.2);
+      display: flex;
+      width: 60%;
+      height:99%;
+      align-items: center;
+      justify-content: center;
+      color: red;
+      border-bottom: 2px solid red;
     }
   }
 }

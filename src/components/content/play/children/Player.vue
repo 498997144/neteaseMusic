@@ -12,7 +12,7 @@
       </p>
     </div>
     <div class="btn">
-      <div @click="$emit('playClick')" :class="{active:isPlay}"></div>
+      <Playbtn @click="$emit('playClick')" :active="isPlay"></Playbtn>
     </div>
     <div class="listbtn" @click="$emit('listClick',1)">
       <i class="ali-iconnav-list"></i>
@@ -97,38 +97,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      
-      div {
-        position: relative;
-        width: 0.5rem;
-        height: 0.5rem;
-        border-radius: 0.25rem;
-        border: 1px solid #666666;
-        
-        &.active::after {
-          content: '';
-          position: absolute;
-          left: 0.15rem;
-          top: 0.14rem;
-          width: 0;
-          height: 0;
-          display: block;
-          border: 0.1rem solid red;
-          transition: all 0.3s ease-in-out;
-        }
-        
-        &::after {
-          content: '';
-          position: absolute;
-          left: 0.18rem;
-          top: 0.08rem;
-          width: 0;
-          height: 0;
-          display: block;
-          border: 0.15rem solid transparent;
-          border-left-color: red;
-        }
-      }
     }
     
     .listbtn {

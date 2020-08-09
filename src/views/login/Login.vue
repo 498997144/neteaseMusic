@@ -2,20 +2,18 @@
   <div class="login-container">
 <!--    Logo-->
     <div class="logo">
-      <img src="../../assets/imags/logo.png">
+      <img src="../../assets/images/logo.png">
     </div>
 <!--    导航控制-->
-    <Tabctrl></Tabctrl>
+    <Tab :tabList="[{name:'手机登陆',path:'phone'},{name:'邮箱登陆',path:'email'},{name:'注册',path:'register'}]"></Tab>
 <!--    表单区域-->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import Tabctrl from "../../components/common/tabctrl/Tabctrl";
     export default {
         name: "Login",
-        components:{Tabctrl},
     }
 </script>
 

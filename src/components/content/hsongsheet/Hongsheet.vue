@@ -1,16 +1,16 @@
 <template>
-  <div class="songsheet-container">
+  <div class="hsongsheet-container">
     <div>
-      <img v-lazy="url?url:picUrl">
+      <img :src="url">
       <span class="ali-iconarrow-right-filling">{{playCount | playCountFilter}}</span>
     </div>
-    <p>{{name}}</p>
+    <p>{{title}}</p>
   </div>
 </template>
 
 <script>
     export default {
-        name: "Songsheet",
+        name: "Hsongsheet",
         props:{
             songItem:{
                 type:Object,
@@ -18,32 +18,28 @@
                     return {}
                 }
             },
-            picUrl:{
-                type:String,
-                default:'',
-            },
         },
         computed:{
             playCount(){
-                return this.songItem.playCount
+                return this.songItem.resources[0].resourceExtInfo.playCount
             },
-            name(){
-                return this.songItem.name
+            title(){
+              return this.songItem.uiElement.mainTitle.title
             },
             url(){
-                return this.songItem.coverImgUrl
+               return this.songItem.uiElement.image.imageUrl
             },
             id(){
-                return this.songItem.id
+                return this.songItem.creativeId
             },
         },
     }
 </script>
 
 <style lang="less" scoped>
-  .songsheet-container{
-    width: 2rem;
-    div{
+.hsongsheet-container{
+  width: 2rem;
+  div{
     position: relative;
     border-radius:0.1rem;
     overflow: hidden;
@@ -61,14 +57,14 @@
       }
     }
   }
-    p{
-      color: black;
-      line-height: 1.3;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      text-overflow:ellipsis
-    }
+  p{
+    color: black;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow:ellipsis
   }
+}
 </style>

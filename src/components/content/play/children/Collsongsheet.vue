@@ -38,7 +38,10 @@
         },
         watch:{
             checkList(data){
-                this.$emit('update:checkList',data)
+                clearTimeout(this.timer)
+                this.timer = setTimeout(()=>{
+                    this.$emit('update:checkList',data)
+                },500)
             },
         },
         methods:{

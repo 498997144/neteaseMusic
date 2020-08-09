@@ -30,5 +30,6 @@
   display: flex;
   width: 100%;
   height: 0.9rem;
+  background-color: white;
 }
 </style>

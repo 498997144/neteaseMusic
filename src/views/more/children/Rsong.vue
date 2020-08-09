@@ -2,17 +2,17 @@
   <div class="rsong-container">
     <swiper :options="slidesOptions">
       <swiper-slide  v-for="(item,index) in songList" :key="index">
-        <Song v-for="(song,index) in item.resources" :key="index" :song="song"></Song>
+        <Hsong v-for="(song,index) in item.resources" :key="index" :song="song"></Hsong>
       </swiper-slide>
     </swiper>
   </div>
 </template>
 
 <script>
-  import Song from "../../../components/content/song/Song";
+  import Hsong from "../../../components/content/hsong/Hsong";
     export default {
         name: "Rsong",
-        components:{Song,},
+        components:{Hsong,},
         props:{
             songList:{
                 type:Array,

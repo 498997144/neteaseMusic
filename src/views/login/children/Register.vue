@@ -135,7 +135,7 @@
   .reg-container {
     .reg,.password,.captcha {
       margin: 0 auto;
-      margin-top: 1rem;
+      margin-top: 0.4rem;
     }
     
     /*.password {*/
@@ -154,7 +154,7 @@
       align-items: center;
       padding: 0 0.1rem;
       margin: 0 auto;
-      margin-top: 0.7rem;
+      margin-top: 0.4rem;
       width: 3rem;
       height: 0.6rem;
       border-radius: 0.3rem;

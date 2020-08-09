@@ -112,6 +112,9 @@
       color: #e3e3e3;
       top: 50%;
       transform: translateY(-50%);
+      &::before{
+        font-size: 0.4rem;
+      }
       &.active{
         right: 0.5rem;
       }
@@ -126,6 +129,9 @@
       top: 50%;
       transform: translateY(-50%);
       right: 0;
+      &::before{
+        font-size: 0.4rem;
+      }
     }
     .cbtn{
       position: absolute;

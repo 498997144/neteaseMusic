@@ -1,19 +1,25 @@
 <template>
-  <div class="song-container" v-if="length">
-    <div class="img">
-      <img :src="imgUrl">
+  <div class="csong-container">
+    <div class="image">
+      <i class="ali-iconsound-filling" v-if="currentId == song.id"></i>
+      <img v-else :src="song.al.picUrl">
     </div>
-    <div class="name" @click="addSong">
-      <p class="title">
-        <span>{{mainTitle}}</span>
-        <i>{{names}}</i>
-      </p>
-      <p class="desc" v-if="song.uiElement.subTitle">
-        <i :class="{active:titleType}">{{subTitle}}</i>
-      </p>
+    <ul class="songinfo" @click="addSong">
+      <li class="name">
+        <span class="elli">{{song.name}}</span>
+        <i v-if="reason">{{reason.reason}}</i>
+      </li>
+      <li class="singer">
+        <em v-if="song.privilege.flag < 128 && song.privilege.flag > 4">独家</em>
+        <i v-if="song.privilege.maxbr === 999000">SQ</i>
+        <span class="elli">{{names + ' - ' + song.al.name}}</span>
+      </li>
+    </ul>
+    <div class="video">
+      <i class="ali-iconvideo" v-if="song.mv"></i>
     </div>
-    <div class="btn" @click="addSong">
-      <div :class="{active:currentId === id}"></div>
+    <div class="btn">
+      <i class="ali-iconmore"></i>
     </div>
   </div>
 </template>
@@ -26,6 +32,12 @@
                 type:Object,
                 default(){
                     return {}
+                },
+            },
+            reasons:{
+                type:Array,
+                default() {
+                    return []
                 }
             },
         },
@@ -35,54 +47,41 @@
             }
         },
         computed:{
-            //拼接歌多个歌手名字
             names(){
-                let names = '-'
-                this.song.resourceExtInfo.artists.forEach((item)=>{
+                let names = ''
+                this.song.ar.forEach((item)=>{
                     names += item.name + '/'
                 })
-                names = names.substring(0,names.length-1)
+                names = names.slice(0,names.length - 1)
                 return names
             },
-            imgUrl(){
-                return this.song.uiElement.image.imageUrl
-            },
-            mainTitle(){
-                return this.song.uiElement.mainTitle.title
-            },
-            subTitle(){
-                return this.song.uiElement.subTitle.title
-            },
-            titleType(){
-                return this.song.uiElement.subTitle.titleType === 'songRcmdTag'
-            },
-            length(){
-                return  Object.keys(this.song).length > 0
-            },
-            id(){
-                return this.song.resourceExtInfo.songData.id
+            reason(){
+               return this.reasons.find((item)=>{
+                   return item.songId === this.song.id
+                })
             },
             
         },
         methods:{
             //添加歌曲到播放列表
             addSong(){
-                if(this.currentId !== this.id){
+                if(this.currentId !== this.song.id){
                     const song = {}
-                    song.id = this.id
-                    song.name = this.song.resourceExtInfo.songData.name
-                    song.ar = this.song.resourceExtInfo.songData.artists
-                    song.al = this.song.resourceExtInfo.songData.album
-                    song.privilege = this.song.resourceExtInfo.songPrivilege
+                    song.id = this.song.id
+                    song.name = this.song.name
+                    song.ar = this.song.ar
+                    song.al = this.song.al
+                    song.privilege = this.song.privilege
                     this.$store.commit('addSong',song)
-                    this.bus.$emit('play',this.id)
-                }else{
+                    this.bus.$emit('play',this.song.id)
+                }else {
                     this.bus.$emit('showDetail')
                 }
+                
             },
         },
         mounted() {
-            //接收播放列表id改变,如果id相同则收变播放按钮为播放状态
+            //接收播放列表id改变,如果相同则在次点击时显示祥情
             this.bus.$on('changeId',(id)=>{
                 this.currentId = id
             })
@@ -91,100 +90,73 @@
 </script>
 
 <style lang="less" scoped>
-.song-container{
+.csong-container{
   display: flex;
-  width: 7.5rem;
-  height: 1.4rem;
-  padding: 0 0.2rem;
-  align-items: center;
-  .name{
-    flex: 60%;
-    height: 1rem;
-    display: flex;
-    flex-direction: column;
-    p{
-      flex: 1;
-    }
-    .title{
-      display: flex;
-      align-items: center;
-      span{
-        width: 2rem;
-        color: black;
-        font-size: 14px;
-        margin-right: 0.05rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      i{
-        width: 1rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
-    .desc{
-      display: flex;
-      align-items: center;
-      i{
-        width: 3rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        &.active{
-          color: red;
-        }
-      }
-    }
-  }
-  .img,.btn{
-    flex: 20% 0 0.1;
-  }
-  .img{
+  height: 1rem;
+  margin: 0.1rem 0;
+  .image{
     display: flex;
     justify-content: center;
-    align-items: center;
+    flex: 1.4rem 0 0;
     img{
       width: 1rem;
       height: 1rem;
-      border-radius: 0.05rem;
+      border-radius: 0.1rem;
+    }
+    i{
+      color: red;
     }
   }
-  .btn{
-    height: 100%;
+  .songinfo{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    div{
-      position: relative;
-      width:0.5rem;
-      height: 0.5rem;
-      border-radius: 0.25rem;
-      border: 1px solid #666666;
-      &.active::after{
-        content: '';
-        position: absolute;
-        left: 0.14rem;
-        top:0.14rem;
-        width: 0;
-        height: 0;
-        display: block;
-        border: 0.1rem solid red;
-        transition: all 0.3s ease-in-out;
+    flex-direction: column;
+    flex: 1;
+    .name{
+      display: flex;
+      align-items: center;
+      flex: 1;
+      span{
+        width:1.8rem;
+        font-size: 14px;
+        color: black;
       }
-      &::after{
-        content: '';
-        position: absolute;
-        left: 0.18rem;
-        top:0.08rem;
-        width: 0;
-        height: 0;
-        display: block;
-        border: 0.15rem solid transparent;
-        border-left-color: red;
+      i{
+        color: red;
+        border: 1px solid red;
+        padding: 2px 4px;
+        margin-left: 0.15rem;
       }
     }
+    .singer{
+      display: flex;
+      align-items: center;
+      flex: 1;
+      span{
+        width: 2.4rem;
+        }
+      em{
+        padding: 2px 4px;
+        margin-right: 0.15rem;
+        color: red;
+        border: 1px solid red;
+      }
+      i{
+        padding: 2px 4px;
+        margin-right: 0.15rem;
+        color: red;
+        border: 1px solid red;
+      }
+    }
+  }
+  .video{
+    display: flex;
+    justify-content: center;
+    flex: 0.8rem 0 0;
+  }
+  .btn{
+    display: flex;
+    justify-content: center;
+    flex: 0.8rem 0 0;
   }
 }
 </style>

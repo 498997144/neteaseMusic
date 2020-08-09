@@ -87,7 +87,7 @@
   .email-container {
     .email, .password {
       margin: 0 auto;
-      margin-top: 1rem;
+      margin-top: 0.6rem;
     }
     
     /*.password{*/

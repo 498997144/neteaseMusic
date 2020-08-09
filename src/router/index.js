@@ -17,6 +17,10 @@ const Register = () => import(/* webpackChunkName: "Login" */ '../views/login/ch
 
 const Recommendsong = () => import(/* webpackChunkName: "Recommendsong" */ '../views/recommendsong/Recommendsong.vue')
 
+const Songsheetcate = () => import(/* webpackChunkName: "Songsheetcate" */ '../views/songsheetcategory/Songsheetcate.vue')
+const Tagcategories = () => import(/* webpackChunkName: "Tagcategories" */ '../views/tagcategories/Tagcategories.vue')
+const Othercate = () => import(/* webpackChunkName: "Othercate" */ '../views/othercate/Othercate.vue')
+
 
 Vue.use(VueRouter)
 
@@ -84,6 +88,21 @@ Vue.use(VueRouter)
     path:'/recommend/song',
     name:'recommendsong',
     component:Recommendsong,
+  },
+  {
+    path:'/songsheet/category',
+    name:'songsheetcate',
+    component:Songsheetcate,
+  },
+  {
+    path:'/songsheet/tag',
+    name:'tagcategories',
+    component:Tagcategories,
+  },
+  {
+    path:'/songsheet/othercate',
+    name:'othercate',
+    component:Othercate,
   },
   
 ]

@@ -14,7 +14,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-[class^="ali"]:before{
+[class*="ali"]:before{
   font-family: "iconfont" !important;
   /*font-size: 0.36rem;*/
   font-size: 0.5rem;

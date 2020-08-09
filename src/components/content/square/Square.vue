@@ -39,13 +39,17 @@
         left: 0.1rem;
         color: white;
         font-size:12px;
+        &::before{
+          font-size: 0.4rem;
+        }
       }
     }
     p{
       color: black;
       background-color: #989898;
       padding: 0 0.1rem;
-      line-height: 1.4;
+      line-height: 0.3rem;
+      height: 0.64rem;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
