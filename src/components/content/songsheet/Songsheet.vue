@@ -1,5 +1,5 @@
 <template>
-  <div class="songsheet-container">
+  <div class="songsheet-container" @click="$emit('click')">
     <div>
       <img v-lazy="url?url:picUrl">
       <span class="ali-iconarrow-right-filling">{{playCount | playCountFilter}}</span>
@@ -49,6 +49,7 @@
     overflow: hidden;
     img{
       width: 2rem;
+      height: 2rem;
     }
     span{
       position: absolute;

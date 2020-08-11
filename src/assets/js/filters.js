@@ -9,11 +9,11 @@ Vue.filter('dateFormat',function(time,format='YYYY-MM-DD HH:mm:ss'){
 
 //播放次数过滤器
 Vue.filter('playCountFilter',function(number){
-    if(number > 10000){
+    if(number >= 10000 && number < 100000000){
         return `${parseInt((number / 10000))}万`
     }
-    if(number > 10000000){
-        return `${(number / 100000000).toFixed(2)}亿`
+    if(number >= 100000000){
+        return `${(number / 1000000000).toFixed(1)}亿`
     }
     return number
 })

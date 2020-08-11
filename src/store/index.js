@@ -31,9 +31,7 @@ export default new Vuex.Store({
         //添加单首歌曲到播放列表
         addSong(state, song) {
             const songId = song.id
-            const flag = state.playList.find((item)=>{
-                return songId === item.id
-            })
+            const flag = state.playList.find(item => songId === item.id)
             if(!flag){
                 state.playList.push(song)
                 localStorage.setItem('playList', JSON.stringify(state.playList))

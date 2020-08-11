@@ -1,5 +1,5 @@
 <template>
-  <div class="hsongsheet-container">
+  <div class="hsongsheet-container" @click="$router.push({name:'sheetdetail',params:{id}})">
     <div>
       <img :src="url">
       <span class="ali-iconarrow-right-filling">{{playCount | playCountFilter}}</span>

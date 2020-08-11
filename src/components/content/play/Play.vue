@@ -155,6 +155,7 @@
             },
             //播放结束控制
             playEnd(){
+                const randomSong = Math.floor(Math.random() * (this.length - 1))
                 this.isPlay = false
                 switch (this.currentMode) {
                     case 0:
@@ -168,18 +169,15 @@
                         this.toogleSong(this.currentSong)
                         break
                     case 2:
-                        var randomSong = Math.floor(Math.random() * (this.length - 1))
                         this.toogleSong(randomSong)
+                        break
                 }
             },
             //切换歌曲
             toogleSong(index){
                 this.currentSong = index
                 this.isPlay = false
-                // this.audio.pause()
-                if(this.playTimer){
-                    clearTimeout(this.playTimer)
-                }
+                clearTimeout(this.playTimer)
                 this.playTimer = setTimeout(this.play,800)
             },
             //删除歌曲
@@ -194,11 +192,17 @@
                 if(this.currentSong === this.length){
                     this.toogleSong(index - 1)
                 }
+                
+                if(!this.length){
+                    location.reload()
+                }
+                
             },
             //清空播放列表
             clearplayList(){
                 this.confirm('确定要清空播放列表吗?',()=>{
                     this.$store.commit('clearPlaylist')
+                    location.reload()
                 })
             },
             //获取歌曲url
@@ -349,13 +353,13 @@
                const index = this.playList.findIndex((item)=>{
                     return songId === item.id
                 })
-                if(index !== this.currentSong){
+                if(index !== this.currentSong || index === 0){
                     this.toogleSong(index)
                 }
             })
             //接收播放全按钮点击后切换歌曲
             this.bus.$on('toogleSong',this.toogleSong)
-            //接收单首歌点击这后显示歌曲祥情
+            //接收单首歌点击之后显示歌曲祥情
             this.bus.$on('showDetail',()=>{ this.detailShow = true })
         },
     }

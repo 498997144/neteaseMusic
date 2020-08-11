@@ -24,7 +24,7 @@
 <style lang="less" scoped>
     .buttons-container {
       display: flex;
-      height: 0.8rem;
+      height: 1rem;
       li {
         flex: 1;
         display: flex;

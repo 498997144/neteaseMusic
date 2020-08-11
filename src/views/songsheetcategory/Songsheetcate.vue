@@ -19,7 +19,7 @@
     <!--    轮播推荐-->
     <swiper :options="bannerOptions" class="banner" v-if="!currentIndex">
       <swiper-slide class="banneritem" v-for="item in swiperData" :key="item.id">
-        <div>
+        <div @click="$router.push({name:'sheetdetail',params:{id:item.id}})">
           <img :src="item.coverImgUrl">
           <span class="ali-iconarrow-right-filling">{{item.playCount | playCountFilter}}</span>
         </div>
@@ -30,11 +30,12 @@
     <!--    歌单列表-->
     <div :class="['songsheetlist',{active:currentIndex}]" v-if="tag">
       <Songsheet class="songsheetitem" v-for="(item,index) in tagList"
-                  :songItem="item" :key="index">
+                  :songItem="item" :key="index" @click="$router.push({name:'sheetdetail',params:{id:item.id}})">
       </Songsheet>
     </div>
     <div :class="['songsheetlist',{active:currentIndex}]" v-else>
       <Songsheet class="songsheetitem" v-for="(item,index) in songsheetList"
+                 @click="$router.push({name:'sheetdetail',params:{id:item.id}})"
                  :picUrl="picUrl(index)" :songItem="item" :key="index">
       </Songsheet>
     </div>
@@ -153,7 +154,6 @@
             },
             //全部歌单
             async getAll(tag = this.tag, limit = this.limit, page = this.page) {
-                console.log(tag)
                 if(!tag){
                     if ((limit * page) >= this.total) return this.toast('没有更多歌单了')
                     const response = await this.axios.get(`/top/playlist?limit=${limit}&offset=${limit * page}&cat=${tag}`)

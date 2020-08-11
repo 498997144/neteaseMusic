@@ -8,7 +8,7 @@
     <!--    歌单列表-->
     <div class="songsheetlist">
       <Songsheet class="songsheetitem" v-for="(item,index) in songsheetList"
-                 :songItem="item" :key="index">
+                 :songItem="item" :key="index" @click="$router.push({name:'sheetdetail',params:{id:item.id}})">
       </Songsheet>
     </div>
   </div>

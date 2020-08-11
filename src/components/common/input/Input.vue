@@ -79,10 +79,11 @@
   .input-container {
     position: relative;
     width: 60%;
+    height: 0.5rem;
     margin: 0 auto;
     input {
       width: 100%;
-      height: 0.5rem;
+      height: 100%;
       outline: none;
       background-color: transparent;
       border-bottom: 1px solid #e3e3e3;
@@ -109,7 +110,7 @@
     .clear {
       position: absolute;
       right: 0;
-      color: #e3e3e3;
+      color: white;
       top: 50%;
       transform: translateY(-50%);
       &::before{

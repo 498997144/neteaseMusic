@@ -51,13 +51,10 @@
 </template>
 
 <script>
-  import Song from "../../components/content/song/Song";
-  import Buttons from "../../components/common/buttons/Buttons";
-  import {collsongSheet} from "../../assets/js/mixin"
+  import {collsongSheet,slectAction} from "../../assets/js/mixin"
     export default {
         name: "Recommendsong",
-        components:{Song,Buttons},
-        mixins:[collsongSheet],
+        mixins:[collsongSheet,slectAction],
         data(){
             return {
                 songData:{
@@ -65,15 +62,7 @@
                     orderSongs:[],
                     recommendReasons:[],
                 },//每日推荐数据
-                buttonList:[
-                    {icon:'ali-iconplay',text:'下一首播放'},
-                    {icon:'ali-iconadd',text:'加入歌单'},
-                    {icon:'ali-icondownload',text:'下载'},
-                    {icon:'ali-iconashbin',text:'删除下载'},
-                ],//按钮
-                currentSong:0, //当前正在播放第几首歌曲
-                checkSongs:[], //选中的歌曲
-                checkbtnShow:false, //选择歌曲显示隐藏
+                
             }
         },
         methods:{
@@ -85,65 +74,6 @@
                     this.songData.dailySongs = response.data.dailySongs
                     this.songData.orderSongs = response.data.orderSongs
                     this.songData.recommendReasons = response.data.recommendReasons
-                }
-            },
-            //选择歌曲
-            pushitem(value){
-                this.checkSongs.push(value)
-            },
-            removeitem(value){
-               const index = this.checkSongs.findIndex((item)=>{
-                    return item === value
-                })
-                this.checkSongs.splice(index,1)
-            },
-            //按钮点击
-            btnCliick(index){
-                switch (index) {
-                    case 0:
-                        if(this.checkSongs.length){
-                            //取出选中的歌曲
-                            const checkSongs = []
-                            this.checkSongs.forEach((id)=>{
-                               const song =  this.playList.find((item)=>{
-                                    return item.id == id
-                                })
-                                checkSongs.push(song)
-                            })
-                            //检查重复
-                            const repeatSongs = []
-                            checkSongs.forEach((item)=>{
-                                const song = this.$store.state.playList.find((song)=>{
-                                    return item.id == song.id
-                                })
-                                if(song){
-                                    repeatSongs.push(song)
-                                }
-                            })
-                            if(repeatSongs.length){
-                                this.toast('重复歌曲')
-                            }else {
-                                this.$store.commit('Additional',{index:this.currentSong,songs:checkSongs})
-                            }
-                        }
-                        break
-                    case 1:
-                        this.checkbtnShow = false
-                        this.showColl()
-                        break
-                }
-            },
-            //播放全部
-            playAll(){
-                this.$store.commit('savePlaylist',this.playList)
-                this.bus.$emit('toogleSong',0)
-            },
-            //显示选择按钮
-            showCheck(){
-                this.checkbtnShow = !this.checkbtnShow
-                if(!this.checkbtnShow){
-                    this.checkSongs = []
-                    this.$refs.checkBtn.forEach(item => item.reset())
                 }
             },
         },
@@ -164,17 +94,8 @@
                 })
                 return playList
             },
-            //收藏歌曲的Id
-            collsongsid(){
-               return this.checkSongs
-            },
+            
         },
-        mounted() {
-            //接收播放列表id改变,记录当前播放歌曲的id
-            this.bus.$on('changeSong',(currentSong)=>{
-                this.currentSong = currentSong
-            })
-        }
     }
 </script>
 

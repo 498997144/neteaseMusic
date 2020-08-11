@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import Hsongsheet from "../../../components/content/hsongsheet/Hongsheet";
+  import Hsongsheet from "../../../components/content/hsongsheet/Hsongsheet";
     export default {
         name: "Rsongsheet",
         components:{Hsongsheet,},

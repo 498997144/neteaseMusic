@@ -20,6 +20,7 @@ const Recommendsong = () => import(/* webpackChunkName: "Recommendsong" */ '../v
 const Songsheetcate = () => import(/* webpackChunkName: "Songsheetcate" */ '../views/songsheetcategory/Songsheetcate.vue')
 const Tagcategories = () => import(/* webpackChunkName: "Tagcategories" */ '../views/tagcategories/Tagcategories.vue')
 const Othercate = () => import(/* webpackChunkName: "Othercate" */ '../views/othercate/Othercate.vue')
+const Sheetdetail = () => import(/* webpackChunkName: "Sheetdetail" */ '../views/sheetdetail/Sheetdetail.vue')
 
 
 Vue.use(VueRouter)
@@ -103,6 +104,11 @@ Vue.use(VueRouter)
     path:'/songsheet/othercate',
     name:'othercate',
     component:Othercate,
+  },
+  {
+    path:'/songsheet/detail',
+    name:'sheetdetail',
+    component:Sheetdetail,
   },
   
 ]

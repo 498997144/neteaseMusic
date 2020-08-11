@@ -2,7 +2,8 @@
   <div class="csong-container">
     <div class="image">
       <i class="ali-iconsound-filling" v-if="currentId == song.id"></i>
-      <img v-else :src="song.al.picUrl">
+      <span v-else-if="typeof index === 'number'&& currentId !== song.id">{{index+1}}</span>
+      <img v-else v-lazy="song.al.picUrl">
     </div>
     <ul class="songinfo" @click="addSong">
       <li class="name">
@@ -39,6 +40,10 @@
                 default() {
                     return []
                 }
+            },
+            index:{
+                type:Number,
+                default:null,
             },
         },
         data(){
@@ -97,6 +102,7 @@
   .image{
     display: flex;
     justify-content: center;
+    align-items: center;
     flex: 1.4rem 0 0;
     img{
       width: 1rem;
@@ -105,6 +111,9 @@
     }
     i{
       color: red;
+    }
+    span{
+      font-size: 14px;
     }
   }
   .songinfo{
