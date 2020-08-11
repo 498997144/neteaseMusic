@@ -17,10 +17,10 @@
       </swiper-slide>
     </swiper>
     <!--    轮播推荐-->
-    <swiper :options="bannerOptions" class="banner" v-if="!currentIndex">
+    <swiper :options="bannerOptions" ref="bannerSwiper" class="banner" v-if="!currentIndex">
       <swiper-slide class="banneritem" v-for="item in swiperData" :key="item.id">
-        <div @click="$router.push({name:'sheetdetail',params:{id:item.id}})">
-          <img :src="item.coverImgUrl">
+        <div>
+          <img :src="item.coverImgUrl" :id="item.id">
           <span class="ali-iconarrow-right-filling">{{item.playCount | playCountFilter}}</span>
         </div>
         <p>{{item.name}}</p>
@@ -88,6 +88,11 @@
                     spaceBetween: 60,
                     centeredSlides: true,
                     slidesPerView: 'auto',
+                    on:{
+                        click:(event)=>{
+                            this.$router.push({name:'sheetdetail',params:{id:event.target.id}})
+                        }
+                    },
                 }, //轮播配置
                 Flag1:true,
                 Flag2:true,
@@ -124,6 +129,9 @@
                         return ''
                     }
                 }
+            },
+            bannerSwiper(){
+                return this.$refs.bannerSwiper
             },
         },
         methods: {

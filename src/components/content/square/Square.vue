@@ -48,7 +48,7 @@
       color: black;
       background-color: #989898;
       padding: 0 0.1rem;
-      line-height: 0.3rem;
+      line-height: 0.32rem;
       height: 0.64rem;
       display: -webkit-box;
       -webkit-box-orient: vertical;
