@@ -4,7 +4,7 @@
     <Header v-if="$route.meta.showHeader" style=" border-bottom: 1px solid #999999;">
         <i slot="left" class="ali-iconset"></i>
         <Tab slot="middle" class="tab"></Tab>
-        <i slot="right" class="ali-iconsearch"></i>
+        <i slot="right" class="ali-iconsearch" @click="$router.push({name:'search'})"></i>
     </Header>
 <!--    主体-->
     <router-view :class="{active:this.$store.state.playList.length}" />

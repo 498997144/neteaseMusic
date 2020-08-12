@@ -276,8 +276,8 @@
                 }
             },
             //监路当前路由,控制在某些页面不要显示控件
-            $route(route){
-                this.currentRoute = route.matched[0].name
+            $route(to){
+                this.currentRoute = to.matched[0].name
             },
         },
         computed:{

@@ -14,13 +14,14 @@ const Phone = () => import(/* webpackChunkName: "Login" */ '../views/login/child
 const Email = () => import(/* webpackChunkName: "Login" */ '../views/login/children/Email.vue')
 const Register = () => import(/* webpackChunkName: "Login" */ '../views/login/children/Register.vue')
 
-
 const Recommendsong = () => import(/* webpackChunkName: "Recommendsong" */ '../views/recommendsong/Recommendsong.vue')
 
 const Songsheetcate = () => import(/* webpackChunkName: "Songsheetcate" */ '../views/songsheetcategory/Songsheetcate.vue')
 const Tagcategories = () => import(/* webpackChunkName: "Tagcategories" */ '../views/tagcategories/Tagcategories.vue')
 const Othercate = () => import(/* webpackChunkName: "Othercate" */ '../views/othercate/Othercate.vue')
 const Sheetdetail = () => import(/* webpackChunkName: "Sheetdetail" */ '../views/sheetdetail/Sheetdetail.vue')
+
+const Search = () => import(/* webpackChunkName: "Search" */ '../views/search/Search.vue')
 
 
 Vue.use(VueRouter)
@@ -109,6 +110,11 @@ Vue.use(VueRouter)
     path:'/songsheet/detail',
     name:'sheetdetail',
     component:Sheetdetail,
+  },
+  {
+    path:'/Search',
+    name:'search',
+    component:Search,
   },
   
 ]
