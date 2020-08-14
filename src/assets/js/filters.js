@@ -13,7 +13,7 @@ Vue.filter('playCountFilter',function(number){
         return `${parseInt((number / 10000))}万`
     }
     if(number >= 100000000){
-        return `${(number / 1000000000).toFixed(1)}亿`
+        return `${(number / 100000000).toFixed(1)}亿`
     }
     return number
 })

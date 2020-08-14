@@ -1,7 +1,7 @@
 <template>
   <div class="player-container">
     <div class="left">
-      <img :src="imageUrl">
+      <img :src="imageUrl?imageUrl:'https://p2.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg'">
     </div>
     <div class="middle" @click="$emit('middleClick')">
       <p class="song">

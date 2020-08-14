@@ -11,16 +11,14 @@ export default new Vuex.Store({
     mutations: {
         //保存用户信息
         saveUserinfo(state, userInfo) {
-            console.log('用户信息:',userInfo)
-            if(userInfo === null) userInfo = {}
-            state.userInfo = userInfo
+            // console.log('用户信息:',userInfo)
+            state.userInfo = userInfo === null?{}:userInfo
             localStorage.setItem('userInfo', JSON.stringify(userInfo))
         },
         //保存播放列表
         savePlaylist(state, playList) {
-            console.log('播放列表:',playList)
-            if(playList === null) playList = []
-            state.playList = playList
+            // console.log('播放列表:',playList)
+            state.playList = playList===null?[]:playList
             localStorage.setItem('playList', JSON.stringify(playList))
         },
         //清空播放列表

@@ -208,3 +208,49 @@ export const slectAction = {
         })
     }
 }
+
+export const loadMore = {
+    props:['keyword'],
+    data(){
+        return {
+            searchResult:[],
+            limit:30,
+            page:0,
+            total:1,
+            notfountShow:false,
+        }
+    },
+    watch:{
+        keyword(keyword){
+            if(!keyword) return
+            this.page = 0
+            this.searchResult = []
+            this.total = 1
+            clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(this.getsearchResult,1500)
+        },
+    },
+    methods:{
+        loadmoreData(){
+            clearTimeout(this.loadTimer)
+            this.loadTimer = setTimeout(()=>{
+                const scrollHeight = document.documentElement.scrollTop ||window.pageYOffset
+                const clientHeight = document.documentElement.clientHeight
+                const totalHeight = document.documentElement.scrollHeight
+                if ((scrollHeight + clientHeight) >= totalHeight) {
+                    this.getsearchResult()
+                }
+            },500)
+        },
+    },
+    created() {
+        this.getsearchResult()
+    },
+    mounted() {
+        window.addEventListener('scroll',this.loadmoreData)
+    },
+    beforeDestroy() {
+        window.removeEventListener("scroll", this.loadmoreData)
+    }
+    
+}

@@ -1,7 +1,7 @@
 <template>
   <div class="input-container">
     <input :type="type" maxlength="20" :placeholder="placeholder" :value="value" @blur="$emit('blur')"
-           @input="$emit('input',$event.target.value)">
+           @input="$emit('input',$event.target.value)" @focus="$emit('focus')">
     <p class="error" v-if="error">{{error}}</p>
     <div :class="['ali-iconclose','clear',{active:showpassword},{code:btnTitle}]" v-show="value" @click="$emit('input','')"></div>
     <div :class="[flag?'ali-iconbrowse':'ali-iconNotvisible','pbtn']" @click="btnToggle" v-if="showpassword"></div>

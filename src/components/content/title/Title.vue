@@ -1,7 +1,9 @@
 <template>
   <div class="title-container">
     <span>{{title}}</span>
-    <div @click="$emit('btnClick')">{{btnText}}</div>
+    <slot>
+      <div @click="$emit('btnClick')">{{btnText}}</div>
+    </slot>
   </div>
 </template>
 

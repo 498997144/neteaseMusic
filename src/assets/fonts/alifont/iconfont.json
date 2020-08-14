@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1322835",
+      "name": "女",
+      "font_class": "nv",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "3768072",
+      "name": "女",
+      "font_class": "nv1",
+      "unicode": "e7a8",
+      "unicode_decimal": 59304
+    },
+    {
+      "icon_id": "4473945",
+      "name": "男",
+      "font_class": "nan",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "5163399",
+      "name": "男",
+      "font_class": "ren",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
       "icon_id": "96691",
       "name": "new",
       "font_class": "new1",
@@ -441,7 +469,7 @@
     },
     {
       "icon_id": "11487978",
-      "name": "arrow-lift",
+      "name": "arrow-left",
       "font_class": "arrow-lift",
       "unicode": "e743",
       "unicode_decimal": 59203

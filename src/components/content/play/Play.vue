@@ -91,16 +91,13 @@
                 ],//播放模式
                 currentMode:1, //当前播放模式
                 playlistOption:{
-                    // scrollbar: {
-                    //     el: '.swiper-scrollbar',
-                    //     // hide: true,
-                    // },
                     direction:'vertical',
                     slidesPerView:'auto',
                     freeMode:true,
                     mousewheel: true,
-                    setWrapperSize: true,
-                    // roundLengths: true,
+                    // setWrapperSize: true,
+                    observeParents:true,
+                    observer:true,
                 }, //滑动配置
                 currentRoute:'', //当前路由
                 detailShow:false, //播放祥情显示

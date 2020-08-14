@@ -1,5 +1,5 @@
 <template>
-  <div class="csong-container">
+  <div class="song-container">
     <div class="image">
       <i class="ali-iconsound-filling" v-if="currentId == song.id"></i>
       <span v-else-if="typeof index === 'number'&& currentId !== song.id">{{index+1}}</span>
@@ -10,14 +10,17 @@
         <span class="elli">{{song.name}}</span>
         <i v-if="reason">{{reason.reason}}</i>
       </li>
-      <li class="singer">
+      <li class="singer" v-if="song.privilege">
         <em v-if="song.privilege.flag < 128 && song.privilege.flag > 4">独家</em>
         <i v-if="song.privilege.maxbr === 999000">SQ</i>
         <span class="elli">{{names + ' - ' + song.al.name}}</span>
       </li>
+      <li class="singer" v-else>
+        <span class="elli">{{names + ' - ' + song.al.name}}</span>
+      </li>
     </ul>
     <div class="video">
-      <i class="ali-iconvideo" v-if="song.mv"></i>
+      <i class="ali-iconvideo" v-if="song.mv || song.mvid"></i>
     </div>
     <div class="btn">
       <i class="ali-iconmore"></i>
@@ -95,7 +98,7 @@
 </script>
 
 <style lang="less" scoped>
-.csong-container{
+.song-container{
   display: flex;
   height: 1rem;
   margin: 0.1rem 0;

@@ -11,7 +11,7 @@
     </Header>
     <!--    搜索头部-->
     <Header class="search-header" v-show="searchShow">
-      <i slot="left" class="ali-iconarrow-lift" @click="searchShow = !searchShow"></i>
+      <i slot="left" class="ali-iconarrow-lift" @click="toogleShow"></i>
       <div slot="middle" class="search-center">
         <Input class="search" v-show="searchShow" placeholder="搜索歌单内歌曲" v-model.trim="query" />
       </div>
@@ -85,7 +85,7 @@
       </ul>
     </div>
 <!--    搜索列表-->
-    <Searchlist :searchList="searchList" v-show="searchShow"></Searchlist>
+    <Searchlist :searchList="searchList" :keyword="query" :tipShow="tipShow" v-show="searchShow"></Searchlist>
     <!--    收藏区域-->
     <Dialog v-show="collShow" :isShow.sync="collShow" title="收藏到歌单">
       <div slot="right">
@@ -139,6 +139,7 @@
                 query:'',
                 searchList:[],
                 collFlag:true,
+                tipShow:false,
             }
         },
         watch:{
@@ -166,6 +167,11 @@
                     }
                 })
                 this.searchList = searchList
+                if(this.searchList.length){
+                    this.tipShow = false
+                }else{
+                    this.tipShow = true
+                }
             },
         },
         computed:{
@@ -225,6 +231,10 @@
                         this.toast('取消收藏')
                     }
                 }
+            },
+            toogleShow(){
+                this.searchShow = !this.searchShow
+                this.query = ''
             },
         },
         filters:{

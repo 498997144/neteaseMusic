@@ -15,7 +15,7 @@
     </Header>
 <!--    图片动画区-->
     <div :class="[{active:isPlay},'animation']">
-      <img :src="imageUrl" :class="{active:isPlay}">
+      <img :src="imageUrl?imageUrl:'https://p2.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg'" :class="{active:isPlay}">
       <p></p>
       <p class="b2"></p>
       <p class="b3"></p>

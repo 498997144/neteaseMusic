@@ -1,6 +1,6 @@
 <template>
   <div class="slides-container">
-    <swiper :options="slidesOptions">
+    <swiper :options="{slidesPerView: 'auto',freeMode: true,}">
       <swiper-slide style="width: auto" v-for="(item,index) in slidesData" :key="item.id">
             <div class="item">
               <div @click="to(index)">
@@ -20,10 +20,6 @@
         data(){
             return {
                 slidesData:[],//滑块数据
-                slidesOptions:{
-                    slidesPerView: 'auto',
-                    freeMode: true,
-                }, //滑动配置
             }
         },
         methods:{

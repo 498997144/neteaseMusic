@@ -1,8 +1,8 @@
 <template>
   <div class="searchlist-container">
-    <div class="tip" v-if="!searchList.length">
+    <div class="tip" v-if="tipShow">
       此歌单没有找到您想要的歌曲!
-      <span>去云音乐库试试!</span>
+      <span @click="$router.push({name:'search',params:{keyword}})">去云音乐库试试!</span>
     </div>
     <swiper v-else :options="swiperOption" style="height:100%">
       <swiper-slide style="height:auto;">
@@ -23,6 +23,14 @@
                 default() {
                     return []
                 },
+            },
+            keyword:{
+                type:String,
+                default:'',
+            },
+            tipShow:{
+              type:Boolean,
+              default:false,
             },
         },
         data(){

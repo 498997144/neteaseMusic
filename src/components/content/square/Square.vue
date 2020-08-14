@@ -54,7 +54,7 @@
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow: hidden;
-      text-overflow:ellipsis
+      text-overflow:ellipsis;
     }
   }
 </style>

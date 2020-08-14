@@ -22,6 +22,13 @@ const Othercate = () => import(/* webpackChunkName: "Othercate" */ '../views/oth
 const Sheetdetail = () => import(/* webpackChunkName: "Sheetdetail" */ '../views/sheetdetail/Sheetdetail.vue')
 
 const Search = () => import(/* webpackChunkName: "Search" */ '../views/search/Search.vue')
+const Single = () => import(/* webpackChunkName: "Search" */ '../views/search/children/Single.vue')
+const Album = () => import(/* webpackChunkName: "Search" */ '../views/search/children/Album.vue')
+const Singer = () => import(/* webpackChunkName: "Search" */ '../views/search/children/Singer.vue')
+const Sheet = () => import(/* webpackChunkName: "Search" */ '../views/search/children/Sheet.vue')
+const User = () => import(/* webpackChunkName: "Search" */ '../views/search/children/User.vue')
+const Smovie = () => import(/* webpackChunkName: "Search" */ '../views/search/children/Smovie.vue')
+const Radio = () => import(/* webpackChunkName: "Search" */ '../views/search/children/Radio.vue')
 
 
 Vue.use(VueRouter)
@@ -112,9 +119,15 @@ Vue.use(VueRouter)
     component:Sheetdetail,
   },
   {
-    path:'/Search',
+    path:'/search',
     name:'search',
     component:Search,
+    children:[
+      {name:'single',path:'single',component: Single,},{name:'album',path:'album',component: Album,},
+      {name:'singer',path:'singer',component: Singer,}, {name:'sheet',path:'sheet',component: Sheet,},
+      {name:'user',path:'user',component: User,},
+      {name:'radio',path:'radio',component: Radio,},{name:'smovie',path:'smovie',component: Smovie,},
+    ],
   },
   
 ]
@@ -130,5 +143,8 @@ const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
-
+const originalReplace = VueRouter.prototype.replace;
+VueRouter.prototype.replace = function replace(location) {
+  return originalReplace.call(this, location).catch(err => err);
+}
 export default router
