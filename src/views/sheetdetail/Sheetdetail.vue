@@ -64,7 +64,7 @@
       <!--      播放按钮-->
       <div class="playall">
         <span class="ali-iconplay" @click="playAll">播放全部<i>共({{sheetDetail.trackCount}})首</i></span>
-        <p @click="collSheet" :class="{active:!collFlag}"> + 收藏({{sheetDetail.subscribedCount | countFilter}})</p>
+        <p @click="collSheet" :class="{active:isColl}"> + 收藏({{sheetDetail.subscribedCount | countFilter}})</p>
       </div>
       <!--      歌曲列表-->
       <ul class="songlist">
@@ -72,7 +72,7 @@
         <!--      选择按钮区-->
         <div class="check" v-show="checkbtnShow">
           <Checkbtn v-for="(item) in playList" :value="item.id"  :key="item.id"
-                    ref="checkBtn"  @pushitem="pushitem" @removeitem="removeitem">
+                    ref="selectBtn"  @pushitem="pushitem" @removeitem="removeitem">
           </Checkbtn>
         </div>
       </ul>
@@ -84,19 +84,20 @@
         <span>{{sheetDetail.subscribedCount | countFilter}}人收藏</span>
       </ul>
     </div>
+    {{isColl}}
 <!--    搜索列表-->
     <Searchlist :searchList="searchList" :keyword="query" :tipShow="tipShow" v-show="searchShow"></Searchlist>
     <!--    收藏区域-->
     <Dialog v-show="collShow" :isShow.sync="collShow" title="收藏到歌单">
       <div slot="right">
-        <i @click="toogleCheck">多选</i>
+        <i @click="toogleCheck" ref="checkBtn">多选</i>
       </div>
       <div slot="body">
         <swiper :options="collOption" style="height:7.8rem">
           <swiper-slide style="height:auto;">
             <New @click.native="newsheetShow = true"></New>
             <Collsongsheet ref="collSheet" :songSheet="item" :index="index"
-                           v-for="(item,index) in collSongheet" :key="index"
+                           v-for="(item,index) in userSongheet" :key="index"
                            @coll="coll" :checkShow="checkShow" :checkList.sync="checkList">
             </Collsongsheet>
           </swiper-slide>
@@ -138,7 +139,6 @@
                 searchShow:false,
                 query:'',
                 searchList:[],
-                collFlag:true,
                 tipShow:false,
             }
         },
@@ -188,6 +188,10 @@
                 })
                 return playList
             },
+            //
+            isColl(){
+                return this.userSongheet.find(item => item.id === this.id)
+            },
         },
         methods:{
             async getDetail(id = this.id){
@@ -218,17 +222,17 @@
                 }
             },
             async collSheet(){
-                if(this.collFlag){
-                    this.collFlag = false
+                if(!this.isColl){
                     const response = await this.axios.get(`/playlist/subscribe?t=1&id=${this.id}`)
                     if(response.code === 200){
                         this.toast('收藏成功')
+                        this.$store.dispatch('getusersongSheet',this.userId)
                     }
                 }else {
-                    this.collFlag = true
                     const response = await this.axios.get(`/playlist/subscribe?t=2&id=${this.id}`)
                     if(response.code === 200){
                         this.toast('取消收藏')
+                        this.$store.dispatch('getusersongSheet',this.userId)
                     }
                 }
             },

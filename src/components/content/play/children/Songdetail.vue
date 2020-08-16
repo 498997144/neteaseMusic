@@ -26,7 +26,7 @@
       <!--    按钮-->
       <ul>
         <li>
-          <i class="ali-iconfavorites like"  @click="likeSong"></i>
+          <i :class="['ali-iconfavorites','like',{active:isLike}]"  @click="likeSong"></i>
         </li>
         <li><i class="ali-icondownload"></i></li>
         <li><i class="ali-iconremind"></i></li>
@@ -88,7 +88,6 @@
         },
         data(){
             return {
-                likeFlag:true,
                 commentCount:'',
             }
         },
@@ -97,15 +96,24 @@
                 this.getcommentCount()
             },
         },
+        computed:{
+            isLike(){
+                return this.$store.state.likeList.find(id => id === this.id )
+            },
+            //用户id
+            userId(){
+                return this.$store.state.userInfo.profile.userId
+            },
+        },
         methods:{
            // 喜欢与不喜欢
-           async likeSong(event){
-               if(this.likeFlag){
-                   this.likeFlag = false
+           async likeSong(){
+               if(!this.isLike){
                    const response = await this.axios.get(`/like?id=${this.id}`)
                    if(response.code === 200){
                        this.toast('已添加到喜欢的歌曲列表')
-                       event.target.classList.toggle('active')
+                       this.$store.dispatch('getlikeList',this.userId)
+                       this.$store.dispatch('getusersongSheet',this.userId)
                    }else {
                        this.toast('添加失败')
                    }
@@ -113,11 +121,11 @@
                    const response = await this.axios.get(`/like?id=${this.id}&like=false`)
                    if(response.code === 200){
                        this.toast('取消喜欢成功')
-                       event.target.classList.toggle('active')
+                       this.$store.dispatch('getlikeList',this.userId)
+                       this.$store.dispatch('getusersongSheet',this.userId)
                    }else{
                        this.toast('取消失败')
                    }
-                   this.likeFlag = true
                }
               
            },

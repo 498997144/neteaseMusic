@@ -71,7 +71,12 @@
                         localStorage.setItem('token', response.token)
                         this.$router.push('/more')
                         this.getuserDetail(response.account.id)
-                    } else {
+                        const status = await this.$store.dispatch('getusersongSheet',response.account.id)
+                        if(!status.code) this.toast(status.msg)
+                        const res = await this.$store.dispatch('getlikeList',response.account.id)
+                        if(!res.code) this.toast(res.msg)
+                    }
+                    else {
                         this.toast(response.msg)
                     }
                 } else {

@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 const More = () => import(/* webpackChunkName: "More" */ '../views/more/More.vue')
 
 const My = () => import(/* webpackChunkName: "My" */ '../views/my/My.vue')
+const Playhistory = () => import(/* webpackChunkName: "My" */ '../views/playhistory/Playhistory.vue')
 
 const Cloud = () => import(/* webpackChunkName: "Cloud" */ '../views/cloud/Cloud.vue')
 
@@ -53,6 +54,11 @@ Vue.use(VueRouter)
       showHeader:true,
     },
     component: My
+  },
+  {
+    path: 'playhistory',
+    name: 'playhistory',
+    component: Playhistory
   },
   {
     path: '/cloud',

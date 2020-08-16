@@ -1,7 +1,7 @@
 <template>
   <Dialog v-show="isShow" :isShow="isShow" title="新建歌单" @click.native.self="$emit('update:isShow',false)">
     <div slot="body">
-      <Input placeholder="请输入歌单标题" v-model.trim="title" class="input"/>
+      <Input placeholder="请输入歌单标题" v-model.trim="title" id="input"/>
       <div class="setting">
         <Checkbtn @pushitem="pushitem" @removeitem="removeitem" :value="10"></Checkbtn>
         <span>设置为隐私歌单</span>
@@ -59,7 +59,7 @@
 </script>
 
 <style lang="less" scoped>
-  .input{
+  #input{
     width: 80%;
   }
   .setting{

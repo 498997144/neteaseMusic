@@ -42,7 +42,6 @@ export const collsongSheet = {
         return{
             collShow:false,  //收藏到歌单显示
             newsheetShow:false, //新建歌显示
-            collSongheet:[],//用户歌单
             checkShow:false,//选择框显示控制
             checkList:[],  //选中的歌单
             checkFlag:true, //选择控制
@@ -55,34 +54,28 @@ export const collsongSheet = {
                 slidesPerView:'auto',
                 freeMode:true,
                 mousewheel: true,
-                setWrapperSize: true,
+                observeParents:true,
+                observer:true,
                 // roundLengths: true,
             }, //滑动配置
         }
     },
     methods:{
-        //获取用户歌单
-        async showColl(){
-            const response = await this.axios.get(`/user/playlist?uid=${this.userId}`)
-            if(response.code === 200){
-                this.collSongheet = response.playlist
-                this.collShow = true
-            }else {
-                this.toast(response.msg)
-            }
-        },
         //发送收藏歌单请求
         async coll(sheetId){
             if(this.collsongsid.length){
-                const response = await this.axios.get(`/playlist/tracks?op=add&pid=${sheetId}&tracks=${this.collsongsid.join()}`)
+                const response = await this.axios.get(`/playlist/tracks?op=add&pid=${sheetId}&tracks=${this.collsongsid.join()}&timestamp=${Date.now()}`)
                     .catch(()=>{
                         this.toast('暂不支持多选!')
                     })
                 if(response.code === 200){
                     this.toast('收藏成功')
-                    this.showColl()
+                    const status =  await this.$store.dispatch('getusersongSheet', this.userId)
+                    if(!status.code){
+                        this.toast(status.msg)
+                    }
                 }else{
-                    this.toast(response.msg)
+                    this.toast(response.message || response.msg)
                 }
                 console.log(response)
             }else{
@@ -98,13 +91,15 @@ export const collsongSheet = {
                 this.checkShow = false
                 this.$refs.checkBtn.textContent = '多选'
                 this.checkFlag = true
-                this.checkList = []
-                this.$refs.collSheet.forEach(item => item.$children[0].reset())
+                this.$refs.collSheet.forEach(item => item.reset())
                 if(this.checkList.length){
                     this.coll(this.checkList.join()).catch((error)=>{
                         console.log(error)
                     })
+                }else {
+                    this.toast('请选择歌单')
                 }
+                this.checkList = []
             }
         },
     
@@ -113,6 +108,10 @@ export const collsongSheet = {
         //用户id
         userId(){
             return this.$store.state.userInfo.profile.userId
+        },
+        //用户歌单
+        userSongheet(){
+            return this.$store.state.userSongsheet
         },
     },
 }
@@ -183,7 +182,7 @@ export const slectAction = {
                     break
                 case 1:
                     this.checkbtnShow = false
-                    this.showColl()
+                    this.collShow = true
                     break
             }
         },
@@ -197,7 +196,7 @@ export const slectAction = {
             this.checkbtnShow = !this.checkbtnShow
             if(!this.checkbtnShow){
                 this.checkSongs = []
-                this.$refs.checkBtn.forEach(item => item.reset())
+                this.$refs.selectBtn.forEach(item => item.reset())
             }
         },
     },

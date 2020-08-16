@@ -8,7 +8,7 @@
       <p class="count">{{songSheet.trackCount}}首</p>
     </div>
     <div class="check">
-      <Checkbtn v-show="checkShow" :value="songSheet.id"
+      <Checkbtn v-show="checkShow" :value="songSheet.id" ref="checkBtn"
                 @pushitem="pushitem" @removeitem="removeitem"></Checkbtn>
     </div>
   </div>
@@ -41,10 +41,13 @@
                 clearTimeout(this.timer)
                 this.timer = setTimeout(()=>{
                     this.$emit('update:checkList',data)
-                },500)
+                },100)
             },
         },
         methods:{
+            reset(){
+                this.$refs.checkBtn.reset()
+            },
             //选择歌曲
             pushitem(value){
                 this.checkList.push(value)

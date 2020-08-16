@@ -13,7 +13,7 @@
         <!--      选择按钮区-->
         <div class="check" v-show="checkbtnShow">
           <Checkbtn v-for="(item,index) in playList" :value="item.id"  :key="index"
-                    ref="checkBtn"  @pushitem="pushitem" @removeitem="removeitem">
+                    ref="selectBtn"  @pushitem="pushitem" @removeitem="removeitem">
           </Checkbtn>
         </div>
       </ul>
@@ -22,14 +22,14 @@
     <!--    收藏区域-->
     <Dialog v-show="collShow" :isShow.sync="collShow" title="收藏到歌单">
       <div slot="right">
-        <i @click="toogleCheck">多选</i>
+        <i @click="toogleCheck" ref="checkBtn">多选</i>
       </div>
       <div slot="body">
         <swiper :options="collOption" style="height:7.8rem">
           <swiper-slide style="height:auto;">
             <New @click.native="newsheetShow = true"></New>
             <Collsongsheet ref="collSheet" :songSheet="item" :index="index"
-                           v-for="(item,index) in collSongheet" :key="index"
+                           v-for="(item,index) in userSongheet" :key="index"
                            @coll="coll" :checkShow="checkShow" :checkList.sync="checkList">
             </Collsongsheet>
           </swiper-slide>

@@ -33,7 +33,7 @@
             
         },
         methods:{
-            //获取DJ,MV,等数,歌单数量
+            //获取DJ,MV,歌单数量
             async getsubCount(){
                 const response = await this.axios.get(`/user/subcount`)
                 console.log(response)
@@ -49,7 +49,6 @@
 .user-container{
   display: flex;
   height:1.6rem;
-  background-color: #282828;
   .avatar{
     flex: 30%;
     display: flex;

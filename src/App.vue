@@ -22,6 +22,8 @@
       created(){
           this.getuserInfo()
           this.getplayList()
+          this.getlikeList()
+          this.getusersongSheet()
       },
       methods:{
           getuserInfo(){
@@ -29,6 +31,12 @@
           },
           getplayList(){
               this.$store.commit('savePlaylist',JSON.parse(localStorage.getItem('playList')))
+          },
+          getlikeList(){
+              this.$store.commit('savelikeList',JSON.parse(localStorage.getItem('likeList')))
+          },
+          getusersongSheet(){
+              this.$store.commit('saveusersongSheet',JSON.parse(localStorage.getItem('userSongsheet')))
           },
       },
   }

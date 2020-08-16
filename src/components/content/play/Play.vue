@@ -15,7 +15,7 @@
         </li>
         <li class="edit">
           <div :class="modes[currentMode].icon" @click="toogleMode">{{modes[currentMode].name}}</div>
-          <div class="ali-iconfolder-close" @click="showColl">收藏全部</div>
+          <div class="ali-iconfolder-close" @click="collShow = true">收藏全部</div>
           <div class="ali-iconashbin" @click="clearplayList"></div>
         </li>
         <swiper :options="playlistOption" style="height: 4.8rem;margin-bottom: 0.1rem">
@@ -50,7 +50,7 @@
           <swiper-slide style="height:auto;">
             <New @click.native="newsheetShow = true"></New>
             <Collsongsheet ref="collSheet" :songSheet="item" :index="index"
-                           v-for="(item,index) in collSongheet" :key="index"
+                           v-for="(item,index) in userSongheet" :key="index"
                            @coll="coll" :checkShow="checkShow" :checkList.sync="checkList">
             </Collsongsheet>
           </swiper-slide>
