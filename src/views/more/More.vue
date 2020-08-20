@@ -45,7 +45,7 @@
                const response = await this.axios.get(`/homepage/block/page?refresh=true`)
                if(response.code === 200){
                    this.homeData = response.data.blocks
-                   console.log(response.data.blocks)
+                   // console.log(response.data.blocks)
                }
            },
             

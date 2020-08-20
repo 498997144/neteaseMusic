@@ -28,7 +28,7 @@
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    speed: 500,
+                    speed: 1200,
                     initialSlide: 1,
                 }, //轮播图配置
             }

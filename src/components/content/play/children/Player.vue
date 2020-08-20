@@ -17,7 +17,7 @@
     <div class="listbtn" @click="$emit('listClick',1)">
       <i class="ali-iconnav-list"></i>
     </div>
-    <audio preload :src="url" @canplay="$emit('canplay',$event.target)"
+    <audio preload="auto" :src="url" @canplay="$emit('canplay',$event.target)"
            @progress="$emit('progress',$event.target)"
            ref="audio" @ended="$emit('ended')" @timeupdate="$emit('timeupdate',$event.target)">
       

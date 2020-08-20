@@ -66,11 +66,11 @@
             //手机号、密码符合规则发送登陆请求
             async login() {
                 if (this.phone && this.password) {
-                    const response = await this.axios.post('/login/cellphone', this.loginForm)
+                    const response = await this.axios.post(`/login/cellphone?timestamp=${Date.now()}`, this.loginForm)
                     if (response.code === 200) {
                         localStorage.setItem('token', response.token)
                         this.$router.push('/more')
-                        this.getuserDetail(response.account.id)
+                        this.$store.dispatch('getuserDetail',response.account.id)
                         const status = await this.$store.dispatch('getusersongSheet',response.account.id)
                         if(!status.code) this.toast(status.msg)
                         const res = await this.$store.dispatch('getlikeList',response.account.id)
@@ -81,13 +81,6 @@
                     }
                 } else {
                     this.toast('请输入正确的手机号和密码')
-                }
-            },
-            // 获取用户祥情信息
-            async getuserDetail(id) {
-                const response = await this.axios.get(`/user/detail?uid=${id}`)
-                if (response.code === 200) {
-                    this.$store.commit('saveUserinfo', response)
                 }
             },
         },

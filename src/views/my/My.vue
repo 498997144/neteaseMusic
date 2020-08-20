@@ -68,9 +68,9 @@
         </div>
       </div>
     </div>
-    
     <!--    新建歌单-->
     <Newsheet v-show="newsheetShow" :isShow.sync="newsheetShow" @success="$store.dispatch('getusersongSheet')"></Newsheet>
+    
   </div>
 </template>
 

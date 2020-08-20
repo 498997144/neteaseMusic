@@ -57,6 +57,13 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        // 获取用户祥情信息
+        async getuserDetail({commit},id) {
+            const response = await axios.get(`/user/detail?uid=${id}`)
+            if (response.code === 200) {
+                commit('saveUserinfo', response)
+            }
+        },
         //获取用户歌单
         async getusersongSheet({commit},id){
             const response = await axios.get(`/user/playlist?uid=${id}&timestamp=${Date.now()}`)

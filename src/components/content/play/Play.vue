@@ -39,6 +39,13 @@
         </swiper>
       </ul>
     </div>
+    <!--    歌曲祥情-->
+    <Songdetail v-show="detailShow" :isShow.sync="detailShow" :songUrl="url"
+                :songName="songName" :names="names" :imageUrl="imageUrl"
+                :isPlay="isPlay" @playClick="play" @next="next" @prev="prev"
+                @listClick="toogleShow" :currentTime="currentTime" :totalTime="totalTime"
+                @input="timeChange" :loadingTime="loadingTime" :id="id">
+    </Songdetail>
     
 <!--    收藏区域-->
     <Dialog v-show="collShow" :isShow.sync="collShow" title="收藏到歌单">
@@ -59,13 +66,6 @@
     </Dialog>
 <!--    新建歌单-->
     <Newsheet v-show="newsheetShow" :isShow.sync="newsheetShow" @success="coll"></Newsheet>
-<!--    歌曲祥情-->
-    <Songdetail v-show="detailShow" :isShow.sync="detailShow"
-      :songName="songName" :names="names" :imageUrl="imageUrl"
-    :isPlay="isPlay" @playClick="play" @next="next" @prev="prev"
-    @listClick="toogleShow" :currentTime="currentTime" :totalTime="totalTime"
-    @input="timeChange" :loadingTime="loadingTime" :id="id">
-    </Songdetail>
   </div>
 </template>
 
@@ -249,7 +249,7 @@
                     this.updateFlag = true
                 },1000)
             },
-            //当前加的进度
+            //当前加载的进度
             loading({buffered}){
                 this.loadingTime = buffered.end(buffered.length - 1)
             },

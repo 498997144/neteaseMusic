@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 <!--    头部区域-->
-    <Header v-if="$route.meta.showHeader" style=" border-bottom: 1px solid #999999;">
+    <Header v-if="$route.meta.showHeader">
         <i slot="left" class="ali-iconset"></i>
         <Tab slot="middle" class="tab"></Tab>
         <i slot="right" class="ali-iconsearch" @click="$router.push({name:'search'})"></i>
@@ -19,11 +19,13 @@
   export default {
       name:'App',
       components:{Play},
-      created(){
-          this.getuserInfo()
-          this.getplayList()
-          this.getlikeList()
-          this.getusersongSheet()
+      computed:{
+          userId(){
+              if(Object.keys(this.$store.state.userInfo).length){
+                  return this.$store.state.userInfo.profile.userId
+              }
+              return false
+          },
       },
       methods:{
           getuserInfo(){
@@ -38,6 +40,16 @@
           getusersongSheet(){
               this.$store.commit('saveusersongSheet',JSON.parse(localStorage.getItem('userSongsheet')))
           },
+          getuserDetail(){
+              if(this.userId) this.$store.dispatch('getuserDetail',this.userId)
+          },
+      },
+      created(){
+          this.getuserInfo()
+          this.getplayList()
+          this.getlikeList()
+          this.getusersongSheet()
+          this.getuserDetail()
       },
   }
 </script>

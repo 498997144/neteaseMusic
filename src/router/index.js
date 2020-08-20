@@ -7,6 +7,8 @@ const My = () => import(/* webpackChunkName: "My" */ '../views/my/My.vue')
 const Playhistory = () => import(/* webpackChunkName: "My" */ '../views/playhistory/Playhistory.vue')
 
 const Cloud = () => import(/* webpackChunkName: "Cloud" */ '../views/cloud/Cloud.vue')
+const Hotwall = () => import(/* webpackChunkName: "Cloud" */ '../views/cloud/children/Hotwall.vue')
+const Event = () => import(/* webpackChunkName: "Cloud" */ '../views/cloud/children/Event.vue')
 
 const Movie = () => import(/* webpackChunkName: "Movie" */ '../views/movie/Movie.vue')
 
@@ -56,17 +58,36 @@ Vue.use(VueRouter)
     component: My
   },
   {
-    path: 'playhistory',
+    path: '/playhistory',
     name: 'playhistory',
     component: Playhistory
   },
   {
     path: '/cloud',
     name: 'cloud',
+    redirect:'/cloud/hotwall',
     meta:{
       showHeader:true,
     },
-    component: Cloud
+    component: Cloud,
+    children:[
+        {
+            path:'hotwall',
+            name:'hotwall',
+            component:Hotwall,
+            meta:{
+                showHeader:true,
+            },
+        },
+        {
+            path:'event',
+            name:'event',
+            component:Event,
+            meta:{
+                showHeader:true,
+            },
+        },
+    ],
   },
   {
     path: '/movie',
@@ -115,12 +136,12 @@ Vue.use(VueRouter)
     component:Tagcategories,
   },
   {
-    path:'/songsheet/othercate',
+    path:'/songsheet/othercate/:tag',
     name:'othercate',
     component:Othercate,
   },
   {
-    path:'/songsheet/detail',
+    path:'/songsheet/detail/:id',
     name:'sheetdetail',
     component:Sheetdetail,
   },
@@ -142,7 +163,14 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
-  linkActiveClass:'linkActive',
+  // linkActiveClass:'linkActive',
+})
+
+router.beforeEach((to,from,next) => {
+  if(to.matched[0].name === 'login') return next()
+  const token =  localStorage.getItem('token')
+  if(token) return next()
+  next({name:'login'})
 })
 
 const originalPush = VueRouter.prototype.push

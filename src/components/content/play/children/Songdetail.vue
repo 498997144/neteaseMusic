@@ -1,6 +1,6 @@
 <template>
   <div class="songdetail-container musk">
-<!--    头部区域-->
+    <!--    头部区域-->
     <Header class="header">
       <i slot="left" class="ali-iconarrow-lift" @click="$emit('update:isShow',false)"></i>
       <div slot="middle" class="center">
@@ -13,37 +13,38 @@
       </div>
       <i slot="right" class="ali-iconshare"></i>
     </Header>
-<!--    图片动画区-->
+    <!--    图片动画区-->
     <div :class="[{active:isPlay},'animation']">
-      <img :src="imageUrl?imageUrl:'https://p2.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg'" :class="{active:isPlay}">
+      <img :src="imageUrl?imageUrl:'https://p2.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg'"
+           :class="{active:isPlay}">
       <p></p>
       <p class="b2"></p>
       <p class="b3"></p>
       <p class="b4"></p>
     </div>
-<!--    底部区域-->
+    <!--    底部区域-->
     <div class="footer">
       <!--    按钮-->
       <ul>
         <li>
-          <i :class="['ali-iconfavorites','like',{active:isLike}]"  @click="likeSong"></i>
+          <i :class="['ali-iconfavorites','like',{active:isLike}]" @click="likeSong"></i>
         </li>
-        <li><i class="ali-icondownload"></i></li>
+        <li><i class="ali-icondownload" @click="downLoad"></i></li>
         <li><i class="ali-iconremind"></i></li>
         <li>
           <i class="ali-iconcomments comment">
             <span>{{commentCount | commentCountFilter}}</span>
           </i>
         </li>
-        <li><i class="ali-iconmore" ></i></li>
+        <li><i class="ali-iconmore"></i></li>
       </ul>
       <!--    进度条-->
       <ul class="progress">
         <li class="current">{{currentTime | timeFilter}}</li>
         <li class="mid">
           <input type="range" min="0" :max="totalTime" :value="currentTime"
-          :style="{backgroundSize:`${currentTime / totalTime * 100}%`}"
-          @input="$emit('input',$event.target)">
+                 :style="{backgroundSize:`${currentTime / totalTime * 100}%`}"
+                 @input="$emit('input',$event.target)">
           <div class="loading" :style="{backgroundSize:`${loadingTime / totalTime * 100}%`}"></div>
         </li>
         <li class="total">{{totalTime | timeFilter}}</li>
@@ -75,65 +76,77 @@
 <script>
     export default {
         name: "Songdetail",
-        props:['imageUrl', 'songName', 'names','isShow','isPlay',
-            'totalTime','currentTime','loadingTime','id'],
-        filters:{
-            timeFilter(time){
+        props: ['imageUrl', 'songName', 'names', 'isShow', 'isPlay',
+            'totalTime', 'currentTime', 'loadingTime', 'id', 'songUrl'],
+        filters: {
+            timeFilter(time) {
                 let m = Math.floor(time / 60)
-                m = m >= 10?`${m}`:`0${m}`
+                m = m >= 10 ? `${m}` : `0${m}`
                 let s = parseInt(time % 60)
-                s = s >= 10?`${s}`:`0${s}`
+                s = s >= 10 ? `${s}` : `0${s}`
                 return `${m}:${s}`
             },
         },
-        data(){
+        data() {
             return {
-                commentCount:'',
+                commentCount: '',
             }
         },
-        watch:{
-            id(){
+        watch: {
+            id() {
                 this.getcommentCount()
             },
         },
-        computed:{
-            isLike(){
-                return this.$store.state.likeList.find(id => id === this.id )
+        computed: {
+            isLike() {
+                return this.$store.state.likeList.find(id => id === this.id)
             },
             //用户id
-            userId(){
+            userId() {
                 return this.$store.state.userInfo.profile.userId
             },
         },
-        methods:{
-           // 喜欢与不喜欢
-           async likeSong(){
-               if(!this.isLike){
-                   const response = await this.axios.get(`/like?id=${this.id}`)
-                   if(response.code === 200){
-                       this.toast('已添加到喜欢的歌曲列表')
-                       this.$store.dispatch('getlikeList',this.userId)
-                       this.$store.dispatch('getusersongSheet',this.userId)
-                   }else {
-                       this.toast('添加失败')
-                   }
-               }else{
-                   const response = await this.axios.get(`/like?id=${this.id}&like=false`)
-                   if(response.code === 200){
-                       this.toast('取消喜欢成功')
-                       this.$store.dispatch('getlikeList',this.userId)
-                       this.$store.dispatch('getusersongSheet',this.userId)
-                   }else{
-                       this.toast('取消失败')
-                   }
-               }
-              
-           },
-           //获取评论个数
-            async getcommentCount(){
-               const response = await this.axios.get(`/comment/music`,{params:{id:this.id}})
-                console.log('评论数据',response)
-                if(response.code === 200){
+        methods: {
+            // 喜欢与不喜欢
+            async likeSong() {
+                if (!this.isLike) {
+                    const response = await this.axios.get(`/like?id=${this.id}`)
+                    if (response.code === 200) {
+                        this.toast('已添加到喜欢的歌曲列表')
+                        this.$store.dispatch('getlikeList', this.userId)
+                        this.$store.dispatch('getusersongSheet', this.userId)
+                    } else {
+                        this.toast('添加失败')
+                    }
+                } else {
+                    const response = await this.axios.get(`/like?id=${this.id}&like=false`)
+                    if (response.code === 200) {
+                        this.toast('取消喜欢成功')
+                        this.$store.dispatch('getlikeList', this.userId)
+                        this.$store.dispatch('getusersongSheet', this.userId)
+                    } else {
+                        this.toast('取消失败')
+                    }
+                }
+                
+            },
+            //下载歌曲
+            async downLoad() {
+                const config = {responseType:'blob',withCredentials: false}
+                const response = await this.axios.get(this.songUrl,config)
+                // console.log(response)
+                const a = document.createElement("a")
+                a.download = `${this.songName}-${this.names}.mp3`
+                a.href =  URL.createObjectURL(response)
+                a.click();
+                URL.revokeObjectURL(response)
+                a.remove()
+            },
+            //获取评论个数
+            async getcommentCount() {
+                const response = await this.axios.get(`/comment/music`, {params: {id: this.id}})
+                console.log('评论数据', response)
+                if (response.code === 200) {
                     this.commentCount = response.total
                 }
                 
@@ -145,30 +158,30 @@
 <style lang="less" scoped>
   .songdetail-container {
     background: linear-gradient(45deg, orangered, #a77989, #93618a);
-  
+    
     .header {
       background-color: transparent;
       border: none;
-    
+      
       i {
         color: white
       }
-    
+      
       .center {
         display: flex;
         flex: 1;
         height: 0.9rem;
         flex-direction: column;
-      
+        
         .name {
           align-items: center;
         }
-      
+        
         div {
           display: flex;
           flex: 1;
           align-items: flex-end;
-        
+          
           span {
             font-size: 14px;
             font-weight: 600;
@@ -178,7 +191,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
           }
-        
+          
           i {
             color: #aaaaaa;
             width: 4.8rem;
@@ -189,27 +202,30 @@
         }
       }
     }
-  
+    
     .animation {
       display: flex;
       height: 7rem;
       justify-content: center;
       align-items: center;
       position: relative;
-      &.active p{
-        animation-play-state:running;
+      
+      &.active p {
+        animation-play-state: running;
       }
+      
       img {
         width: 4.5rem;
         height: 4.5rem;
         border-radius: 4.5/2rem;
         border: 3px solid #666666;
         animation: rotate 30s linear infinite forwards paused;
-        &.active{
+        
+        &.active {
           animation-play-state: running;
         }
       }
-    
+      
       p {
         position: absolute;
         left: 50%;
@@ -221,51 +237,55 @@
         animation: bowen 6s linear infinite forwards paused;
         box-shadow: 0px -50px 60px -20px #ff0a00;
       }
-    
+      
       .b2 {
         animation-delay: 1.5s;
         box-shadow: 0 -50px 60px -20px #ff7a00;
       }
-    
+      
       .b3 {
         animation-delay: 3s;
         box-shadow: 0 -50px 60px -20px #ffda0c;
       }
-    
+      
       .b4 {
         animation-delay: 4.5s;
         box-shadow: 0 -50px 60px -20px #ff10ed;
       }
     }
-  
+    
     .footer {
       position: fixed;
       width: 7.5rem;
       left: 50%;
       bottom: 0;
       transform: translateX(-50%);
-    
+      
       ul {
         display: flex;
         height: 0.8rem;
         background-color: transparent;
-      
+        
         li {
           flex: 1;
           display: flex;
           justify-content: center;
           align-items: center;
+          
           i {
             color: white;
           }
-          .like{
-            &.active{
+          
+          .like {
+            &.active {
               color: red;
             }
           }
-          .comment{
+          
+          .comment {
             position: relative;
-            span{
+            
+            span {
               position: absolute;
               left: 0.35rem;
               top: 0;
@@ -275,27 +295,30 @@
           }
         }
       }
-    
+      
       .progress {
         display: flex;
         position: relative;
         height: 0.8rem;
         background-color: transparent;
-        .current{
+        
+        .current {
           display: flex;
-          flex:1.4rem 0 0;
+          flex: 1.4rem 0 0;
           justify-content: center;
           align-items: center;
           color: white;
           font-size: 14px;
         }
-        .mid{
+        
+        .mid {
           display: flex;
           position: relative;
           flex: 1;
           justify-content: center;
           align-items: center;
-          input{
+          
+          input {
             position: absolute;
             z-index: 1;
             width: 100%;
@@ -303,14 +326,16 @@
             outline: 0;
             border-radius: 0.1rem;
             -webkit-appearance: none;
-            background: linear-gradient(to right, red , red) no-repeat;
+            background: linear-gradient(to right, red, red) no-repeat;
             background-size: 0% 100%;
+            
             &::-webkit-slider-runnable-track {
               height: 0.2rem;
               border-radius: 0.1rem;
               box-shadow: 0 1px 1px #def3f8, inset 1px 1px 1px #050505;
             }
-            &::-webkit-slider-thumb{
+            
+            &::-webkit-slider-thumb {
               -webkit-appearance: none;
               width: 0.4rem;
               height: 0.4rem;
@@ -321,103 +346,117 @@
             }
           }
         }
-        .total{
+        
+        .total {
           display: flex;
-          flex:1.4rem 0 0;
+          flex: 1.4rem 0 0;
           justify-content: center;
           align-items: center;
           color: white;
           font-size: 14px;
         }
-        .loading{
+        
+        .loading {
           position: absolute;
           left: 0.04rem;
           transition: all 2s linear;
           transform: translateY(2px);
           height: 0.2rem;
           width: 100%;
-          background: linear-gradient(to right, blue , blue) no-repeat;
+          background: linear-gradient(to right, blue, blue) no-repeat;
           background-size: 0% 100%;
           border-radius: 0.1rem;
         }
       }
-    
+      
       .player {
         height: 1.2rem;
         background-color: transparent;
         display: flex;
-      
+        
         .left {
           width: 1.4rem;
           display: flex;
           justify-content: center;
           align-items: center;
-          i{
+          
+          i {
             color: white;
-            &:before{
+            
+            &:before {
               font-size: 0.8rem;
             }
           }
         }
-      
+        
         .middle {
           flex: 1;
           display: flex;
           height: 100%;
+          
           .prev {
             flex: 28%;
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            i{
+            
+            i {
               color: white;
               transform: rotateY(180deg);
-              &:before{
+              
+              &:before {
                 font-size: 0.8rem;
               }
             }
           }
-        
+          
           .center {
             flex: 44%;
             display: flex;
             justify-content: center;
             align-items: center;
-            i{
+            
+            i {
               color: white;
-              &:before{
+              
+              &:before {
                 font-size: 1.1rem;
               }
             }
           }
-        
+          
           .next {
             flex: 28%;
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            i{
+            
+            i {
               color: white;
-              &:before{
+              
+              &:before {
                 font-size: 0.8rem;
               }
             }
           }
         }
+        
         .listbtn {
           width: 1.4rem;
           display: flex;
           justify-content: center;
           align-items: center;
+          
           i {
             color: white;
-            &:before{
+            
+            &:before {
               font-size: 0.8rem;
             }
           }
         }
       }
-    
+      
       @keyframes rotate {
         0% {
           transform: rotateZ(0deg);
@@ -438,7 +477,7 @@
           opacity: 0;
         }
       }
-    
+      
     }
   }
 </style>
