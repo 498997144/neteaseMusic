@@ -25,7 +25,7 @@
     justify-content: center;
     align-items: center;
     height: 0.9rem;
-    width: 60%;
+    width: 80%;
     font-size: 14px;
     &.active{
       border-bottom: 2px solid #C20C0C;

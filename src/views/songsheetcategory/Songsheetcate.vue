@@ -130,9 +130,6 @@
                     }
                 }
             },
-            bannerSwiper(){
-                return this.$refs.bannerSwiper
-            },
         },
         methods: {
             //分类和标签
@@ -299,7 +296,7 @@
             this.getRecommend()
             this.getHighquality()
         },
-        mounted() {
+        updated() {
             window.addEventListener('scroll',this.loadmoreData)
         },
         beforeDestroy() {

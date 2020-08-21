@@ -40,7 +40,8 @@
                     slidesPerView:'auto',
                     freeMode:true,
                     mousewheel: true,
-                    setWrapperSize: true,
+                    observer:true,
+                    observeParents:true,
                     // roundLengths: true,
                 }, //滑动配置
             }

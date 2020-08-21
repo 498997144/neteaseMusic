@@ -153,11 +153,11 @@
         i {
           position: absolute;
           color: black;
-          right: 0.5rem;
+          right: 0;
         }
         
         /deep/ .search {
-          width: 80%;
+          /*width: 80%;*/
           
           input {
             color: black;

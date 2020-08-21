@@ -84,7 +84,6 @@
         <span>{{sheetDetail.subscribedCount | countFilter}}人收藏</span>
       </ul>
     </div>
-    {{isColl}}
 <!--    搜索列表-->
     <Searchlist :searchList="searchList" :keyword="query" :tipShow="tipShow" v-show="searchShow"></Searchlist>
     <!--    收藏区域-->

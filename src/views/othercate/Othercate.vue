@@ -40,21 +40,18 @@
                 }
             },
             loadmoreData(){
-                clearTimeout(this.loadTimer)
-                this.loadTimer = setTimeout(()=>{
-                    const scrollHeight = document.documentElement.scrollTop ||window.pageYOffset
-                    const clientHeight = document.documentElement.clientHeight
-                    const totalHeight = document.documentElement.scrollHeight
-                    if ((scrollHeight + clientHeight) >= totalHeight) {
-                        this.getAll()
-                    }
-                },500)
+                const scrollHeight = document.documentElement.scrollTop ||window.pageYOffset
+                const clientHeight = document.documentElement.clientHeight
+                const totalHeight = document.documentElement.scrollHeight
+                if ((scrollHeight + clientHeight) >= totalHeight) {
+                    this.getAll()
+                }
             }
         },
         created() {
             this.getAll()
         },
-        mounted() {
+        updated() {
             window.addEventListener('scroll',this.loadmoreData)
         },
         beforeDestroy() {

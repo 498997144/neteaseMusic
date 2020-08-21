@@ -231,21 +231,18 @@ export const loadMore = {
     },
     methods:{
         loadmoreData(){
-            clearTimeout(this.loadTimer)
-            this.loadTimer = setTimeout(()=>{
-                const scrollHeight = document.documentElement.scrollTop ||window.pageYOffset
-                const clientHeight = document.documentElement.clientHeight
-                const totalHeight = document.documentElement.scrollHeight
-                if ((scrollHeight + clientHeight) >= totalHeight) {
-                    this.getsearchResult()
-                }
-            },500)
+            const scrollHeight = document.documentElement.scrollTop ||window.pageYOffset
+            const clientHeight = document.documentElement.clientHeight
+            const totalHeight = document.documentElement.scrollHeight
+            if ((scrollHeight + clientHeight) >= totalHeight) {
+                this.getsearchResult()
+            }
         },
     },
     created() {
         this.getsearchResult()
     },
-    mounted() {
+    updated() {
         window.addEventListener('scroll',this.loadmoreData)
     },
     beforeDestroy() {
