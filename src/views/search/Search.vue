@@ -157,7 +157,7 @@
         }
         
         /deep/ .search {
-          /*width: 80%;*/
+          width: 100%;
           
           input {
             color: black;

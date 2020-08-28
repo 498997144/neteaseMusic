@@ -2,23 +2,32 @@
   <div id="app">
 <!--    头部区域-->
     <Header v-if="$route.meta.showHeader">
-        <i slot="left" class="ali-iconset"></i>
+        <i slot="left" class="ali-iconset" @click="settingShow = true"></i>
         <Tab slot="middle" class="tab"></Tab>
         <i slot="right" class="ali-iconsearch" @click="$router.push({name:'search'})"></i>
     </Header>
 <!--    主体-->
-    <router-view :class="{active:this.$store.state.playList.length}" />
+    <transition>
+      <router-view :class="{active:this.$store.state.playList.length}" />
+    </transition>
 <!--    播放控件-->
     <Play></Play>
-  
+<!--    设置信息-->
+    <Setting :class="['setting',{active:settingShow}]" :isShow.sync="settingShow"></Setting>
   </div>
 </template>
 
 <script>
   import Play from "./components/content/play/Play";
+  import Setting from "./components/content/setting/Setting";
   export default {
       name:'App',
-      components:{Play},
+      components:{Play,Setting},
+      data(){
+          return {
+              settingShow:false,
+          }
+      },
       computed:{
           userId(){
               if(Object.keys(this.$store.state.userInfo).length){
@@ -68,6 +77,25 @@
       color: black;
       transform: scale(1.2);
       border: none;
+    }
+    .setting{
+      visibility: hidden;
+      &.active{
+        visibility: visible;
+      }
+    }
+    .v-enter-active,.v-leave-active{
+      position: absolute;
+      top: 0;
+      width: 7.5rem;
+      transition: all 1s ease-in;
+    }
+    .v-leave-active{
+      /*left: 30%;*/
+    }
+    .v-enter,.v-leave-to{
+      opacity: 0;
+      transform: rotateY(180deg);
     }
   }
 </style>

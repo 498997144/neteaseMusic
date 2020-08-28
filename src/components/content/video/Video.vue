@@ -33,7 +33,7 @@
                 return this.$refs.video
             },
             avatarUrl(){
-                if(Object.keys(this.video).length > 0){
+                if(this.video.creator){
                     return this.video.creator.avatarUrl
                 }
                 return false

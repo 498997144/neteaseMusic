@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 
-axios.defaults.baseURL = ' http://192.168.1.2:3000'
+axios.defaults.baseURL = ' http://47.105.62.241:3000'
 axios.defaults.timeout = 10000
 axios.defaults.withCredentials=true
 axios.defaults.crossDomain=true

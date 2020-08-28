@@ -56,7 +56,7 @@
                         item.pause()
                     })
                     if(paused) this.videos[index].play()
-                },500)
+                },300)
             },
             pause(){
                 this.$nextTick(()=>{
